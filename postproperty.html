@@ -134,11 +134,6 @@
             cursor: pointer;
         }
 
-        .amenity-item input {
-            width: auto;
-            cursor: pointer;
-        }
-
         .upload-box {
             border: 2px dashed #1A3C6E;
             border-radius: 12px;
@@ -146,11 +141,6 @@
             text-align: center;
             cursor: pointer;
             background-color: #f0f4ff;
-            transition: all 0.2s;
-        }
-
-        .upload-box:hover {
-            background-color: #e0eaff;
         }
 
         .upload-box span {
@@ -179,7 +169,6 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
-            transition: all 0.2s;
         }
 
         .submit-btn:hover {
@@ -200,7 +189,27 @@
             color: #F5A623;
         }
 
-        /* Footer */
+        .message {
+            text-align: center;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
         .footer {
             background-color: #1A3C6E;
             color: white;
@@ -233,9 +242,9 @@
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="listings.html">Browse Listings</a>
-            <a href="post-property.html">Post Property</a>
+            <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="#">Log In</a>
+            <a href="login.html">Log In</a>
         </div>
     </div>
 
@@ -248,7 +257,6 @@
     <!-- Form -->
     <div class="form-container">
 
-        <!-- Note -->
         <div class="note-box">
             <strong>📋 Please Note:</strong> All listings are reviewed by the NestHub team before going live. This usually takes less than 24 hours. Make sure all information is accurate and photos are clear.
         </div>
@@ -257,15 +265,14 @@
 
         <div class="form-group">
             <label>Property Title</label>
-<input type="text" id="title" placeholder="e.g. Spacious Room in Gaborone West"/>
-            <textarea id="description" placeholder="Describe your property
+            <input type="text" id="title" placeholder="e.g. Spacious Room in Gaborone West"/>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Property Type</label>
-              <select id="type">
-    <option>Select Type</option>
+                <select id="type">
+                    <option>Select Type</option>
                     <option>Room</option>
                     <option>Apartment</option>
                     <option>House</option>
@@ -274,9 +281,8 @@
             </div>
             <div class="form-group">
                 <label>Location / Area</label>
-                <select>
-                    <select id="location">
-    <option>Select Location</option>
+                <select id="location">
+                    <option>Select Location</option>
                     <option>Gaborone</option>
                     <option>Tlokweng</option>
                     <option>Kgale</option>
@@ -294,9 +300,8 @@
             </div>
             <div class="form-group">
                 <label>Number of Bedrooms</label>
-                <select>
                 <select id="bedrooms">
-    <option>Select</option>
+                    <option>Select</option>
                     <option>Single Room</option>
                     <option>1 Bedroom</option>
                     <option>2 Bedrooms</option>
@@ -308,7 +313,7 @@
 
         <div class="form-group">
             <label>Property Description</label>
-          '[9<textarea id="description" placeholder="Describe your property']'
+            <textarea id="description" placeholder="Describe your property — size, features, nearby landmarks, rules etc."></textarea>
         </div>
 
         <div class="form-group">
@@ -347,17 +352,17 @@
             </div>
             <div class="form-group">
                 <label>Phone Number</label>
-               <input type="tel" id="phone" placeholder="e.
+                <input type="tel" id="phone" placeholder="e.g. 71234567"/>
             </div>
         </div>
 
         <div class="form-group">
             <label>Email Address</label>
-       <input type="email" id="email" placeholder="your
+            <input type="email" id="email" placeholder="your@email.com"/>
         </div>
 
         <div id="submit-message" class="message"></div>
-<button class="submit-btn" onclick="submitLis
+        <button class="submit-btn" onclick="submitListing()">🚀 Submit Listing for Review</button>
 
     </div>
 
@@ -370,7 +375,6 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
@@ -384,7 +388,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
 
     window.submitListing = async function() {
         const title = document.getElementById("title").value;
