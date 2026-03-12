@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Listings — NestHub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #1A3C6E;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .navbar h1 span {
+            color: #F5A623;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #F5A623;
+        }
+
+        .page-header {
+            background-color: #1A3C6E;
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .page-header h2 {
+            font-size: 36px;
+            margin: 0 0 10px 0;
+        }
+
+        .page-header p {
+            color: #F5A623;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .listings-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background-color: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .filter-sidebar h3 {
+            color: #1A3C6E;
+            margin: 0 0 20px 0;
+            font-size: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+        }
+
+        .filter-group label {
+            display: block;
+            color: #1A3C6E;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #d0d8e4;
+            font-size: 14px;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #1A3C6E;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .filter-btn {
+            width: 100%;
+            background-color: #1A3C6E;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .filter-btn:hover {
+            background-color: #F5A623;
+        }
+
+        /* Listings Grid */
+        .listings-right h3 {
+            color: #1A3C6E;
+            font-size: 22px;
+            margin: 0 0 20px 0;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-image {
+            background-color: #d0e4f7;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            position: relative;
+        }
+
+        .verified-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #28a745;
+            color: white;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .card-body h4 {
+            margin: 0 0 4px 0;
+            color: #1A3C6E;
+            font-size: 17px;
+        }
+
+        .card-body p {
+            margin: 0 0 6px 0;
+            color: gray;
+            font-size: 14px;
+        }
+
+        .card-price {
+            color: #F5A623;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: #f0f4ff;
+            color: #1A3C6E;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            display: block;
+            margin-top: 12px;
+            background-color: #1A3C6E;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .view-btn:hover {
+            background-color: #F5A623;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1A3C6E;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            color: #a0b4cc;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .footer h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+        }
+
+        .footer h2 span {
+            color: #F5A623;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Nest<span>Hub</span></h1>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="listings.html">Browse Listings</a>
+            <a href="post-property.html">Post Property</a>
+            <a href="about.html">About Us</a>
+            <a href="#">Log In</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2>Browse All Listings</h2>
+        <p>Find your perfect home in Botswana</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="listings-container">
+
+        <!-- Filter Sidebar -->
+        <div class="filter-sidebar">
+            <h3>🔍 Filter Listings</h3>
+
+            <div class="filter-group">
+                <label>📍 Location</label>
+                <select>
+                    <option>All Locations</option>
+                    <option>Gaborone</option>
+                    <option>Tlokweng</option>
+                    <option>Kgale</option>
+                    <option>Broadhurst</option>
+                    <option>Mogoditsane</option>
+                    <option>Bontleng</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>🏠 Property Type</label>
+                <select>
+                    <option>All Types</option>
+                    <option>Room</option>
+                    <option>Apartment</option>
+                    <option>House</option>
+                    <option>Student Housing</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>💰 Max Price (P)</label>
+                <input type="number" placeholder="e.g. 3000"/>
+            </div>
+
+            <div class="filter-group">
+                <label>🛏️ Bedrooms</label>
+                <select>
+                    <option>Any</option>
+                    <option>1 Bedroom</option>
+                    <option>2 Bedrooms</option>
+                    <option>3 Bedrooms</option>
+                    <option>4+ Bedrooms</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>✨ Amenities</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox"/> WiFi</label>
+                    <label><input type="checkbox"/> Water Included</label>
+                    <label><input type="checkbox"/> Electricity Included</label>
+                    <label><input type="checkbox"/> Parking</label>
+                    <label><input type="checkbox"/> Furnished</label>
+                    <label><input type="checkbox"/> Security</label>
+                </div>
+            </div>
+
+            <button class="filter-btn">Apply Filters</button>
+        </div>
+
+        <!-- Listings -->
+        <div class="listings-right">
+            <h3>Showing 6 Properties</h3>
+            <div class="listings-grid">
+
+                <div class="card">
+                    <div class="card-image">
+                        🏠
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>Room</h4>
+                        <p>📍 Mogoditsane</p>
+                        <div class="card-tags">
+                            <span class="tag">WiFi</span>
+                            <span class="tag">Water</span>
+                        </div>
+                        <p class="card-price">P1,500/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        🏢
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>Apartment</h4>
+                        <p>📍 Bontleng</p>
+                        <div class="card-tags">
+                            <span class="tag">Parking</span>
+                            <span class="tag">Security</span>
+                        </div>
+                        <p class="card-price">P3,000/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        🏡
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>House</h4>
+                        <p>📍 Kgale</p>
+                        <div class="card-tags">
+                            <span class="tag">Furnished</span>
+                            <span class="tag">Parking</span>
+                        </div>
+                        <p class="card-price">P4,500/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        🛏️
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>Student Housing</h4>
+                        <p>📍 Tlokweng</p>
+                        <div class="card-tags">
+                            <span class="tag">WiFi</span>
+                            <span class="tag">Water</span>
+                        </div>
+                        <p class="card-price">P1,200/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        🏠
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>Room</h4>
+                        <p>📍 Broadhurst</p>
+                        <div class="card-tags">
+                            <span class="tag">Electricity</span>
+                            <span class="tag">Security</span>
+                        </div>
+                        <p class="card-price">P1,800/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        🏢
+                        <span class="verified-badge">✔ Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <h4>Apartment</h4>
+                        <p>📍 Gaborone</p>
+                        <div class="card-tags">
+                            <span class="tag">WiFi</span>
+                            <span class="tag">Furnished</span>
+                        </div>
+                        <p class="card-price">P3,500/month</p>
+                        <a href="#" class="view-btn">View Details</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <h2>Nest<span>Hub</span></h2>
+        <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
+    </div>
+
+</body>
+</html>
