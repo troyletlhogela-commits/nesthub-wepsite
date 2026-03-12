@@ -257,14 +257,15 @@
 
         <div class="form-group">
             <label>Property Title</label>
-            <input type="text" placeholder="e.g. Spacious Room in Gaborone West"/>
+<input type="text" id="title" placeholder="e.g. Spacious Room in Gaborone West"/>
+            <textarea id="description" placeholder="Describe your property
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Property Type</label>
-                <select>
-                    <option>Select Type</option>
+              <select id="type">
+    <option>Select Type</option>
                     <option>Room</option>
                     <option>Apartment</option>
                     <option>House</option>
@@ -274,7 +275,8 @@
             <div class="form-group">
                 <label>Location / Area</label>
                 <select>
-                    <option>Select Location</option>
+                    <select id="location">
+    <option>Select Location</option>
                     <option>Gaborone</option>
                     <option>Tlokweng</option>
                     <option>Kgale</option>
@@ -288,12 +290,13 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Price Per Month (P)</label>
-                <input type="number" placeholder="e.g. 2000"/>
+                <input type="number" id="price" placeholder="e.g. 2000"/>
             </div>
             <div class="form-group">
                 <label>Number of Bedrooms</label>
                 <select>
-                    <option>Select</option>
+                <select id="bedrooms">
+    <option>Select</option>
                     <option>Single Room</option>
                     <option>1 Bedroom</option>
                     <option>2 Bedrooms</option>
@@ -305,7 +308,7 @@
 
         <div class="form-group">
             <label>Property Description</label>
-            <textarea placeholder="Describe your property — size, features, nearby landmarks, rules etc."></textarea>
+          '[9<textarea id="description" placeholder="Describe your property']'
         </div>
 
         <div class="form-group">
@@ -344,16 +347,17 @@
             </div>
             <div class="form-group">
                 <label>Phone Number</label>
-                <input type="tel" placeholder="e.g. 71234567"/>
+               <input type="tel" id="phone" placeholder="e.
             </div>
         </div>
 
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" placeholder="your@email.com"/>
+       <input type="email" id="email" placeholder="your
         </div>
 
-        <button class="submit-btn">🚀 Submit Listing for Review</button>
+        <div id="submit-message" class="message"></div>
+<button class="submit-btn" onclick="submitLis
 
     </div>
 
@@ -362,6 +366,69 @@
         <h2>Nest<span>Hub</span></h2>
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
     </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+        authDomain: "nesthub-5e83c.firebaseapp.com",
+        projectId: "nesthub-5e83c",
+        storageBucket: "nesthub-5e83c.firebasestorage.app",
+        messagingSenderId: "596386242109",
+        appId: "1:596386242109:web:5a1e77e0db91f6a6119454",
+        measurementId: "G-CDC0SB1Q4D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    window.submitListing = async function() {
+        const title = document.getElementById("title").value;
+        const type = document.getElementById("type").value;
+        const location = document.getElementById("location").value;
+        const price = document.getElementById("price").value;
+        const bedrooms = document.getElementById("bedrooms").value;
+        const description = document.getElementById("description").value;
+        const phone = document.getElementById("phone").value;
+        const email = document.getElementById("email").value;
+        const msg = document.getElementById("submit-message");
+
+        if(!title || !type || !location || !price || !description || !phone || !email) {
+            msg.className = "message error";
+            msg.textContent = "❌ Please fill in all required fields";
+            msg.style.display = "block";
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "listings"), {
+                title: title,
+                type: type,
+                location: location,
+                price: price,
+                bedrooms: bedrooms,
+                description: description,
+                phone: phone,
+                email: email,
+                verified: false,
+                createdAt: new Date()
+            });
+
+            msg.className = "message success";
+            msg.textContent = "✅ Listing submitted! We will review it within 24 hours.";
+            msg.style.display = "block";
+
+        } catch(error) {
+            msg.className = "message error";
+            msg.textContent = "❌ Error: " + error.message;
+            msg.style.display = "block";
+        }
+    }
+</script>
 
 </body>
 </html>
