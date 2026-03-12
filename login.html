@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — NestHub</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1A3C6E;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .logo h1 span {
+            color: #F5A623;
+        }
+
+        .logo p {
+            color: gray;
+            font-size: 14px;
+            margin: 4px 0 0 0;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: gray;
+            font-size: 15px;
+        }
+
+        .tab.active {
+            color: #1A3C6E;
+            border-bottom: 3px solid #1A3C6E;
+            margin-bottom: -2px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1A3C6E;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1.5px solid #d0d8e4;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1A3C6E;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #F5A623;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background-color: #1A3C6E;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .forgot {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: gray;
+        }
+
+        .forgot a {
+            color: #1A3C6E;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #signup-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        <h1>Nest<span>Hub</span></h1>
+        <p>Find a place. Make it home.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" id="login-tab" onclick="showLogin()">Log In</div>
+        <div class="tab" id="signup-tab" onclick="showSignup()">Sign Up</div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form">
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="login-email" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="Your password"/>
+        </div>
+        <button class="submit-btn" onclick="loginUser()">Log In</button>
+        <div class="forgot"><a href="#">Forgot Password?</a></div>
+        <div id="login-message" class="message"></div>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signup-form">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="signup-name" placeholder="Your full name"/>
+        </div>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="signup-email" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="signup-phone" placeholder="e.g. 71234567"/>
+        </div>
+        <div class="form-group">
+            <label>I am a</label>
+            <select id="signup-role">
+                <option value="tenant">Tenant — Looking for a place</option>
+                <option value="landlord">Landlord — I have a property</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signup-password" placeholder="Create a password"/>
+        </div>
+        <button class="submit-btn" onclick="signupUser()">Create Account</button>
+        <div id="signup-message" class="message"></div>
+    </div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+        authDomain: "nesthub-5e83c.firebaseapp.com",
+        projectId: "nesthub-5e83c",
+        storageBucket: "nesthub-5e83c.firebasestorage.app",
+        messagingSenderId: "596386242109",
+        appId: "1:596386242109:web:5a1e77e0db91f6a6119454",
+        measurementId: "G-CDC0SB1Q4D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.loginUser = async function() {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        const msg = document.getElementById("login-message");
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            msg.className = "message success";
+            msg.textContent = "✅ Login successful! Redirecting...";
+            setTimeout(() => window.location.href = "index.html", 1500);
+        } catch (error) {
+            msg.className = "message error";
+            msg.textContent = "❌ " + error.message;
+        }
+    }
+
+    window.signupUser = async function() {
+        const name = document.getElementById("signup-name").value;
+        const email = document.getElementById("signup-email").value;
+        const phone = document.getElementById("signup-phone").value;
+        const role = document.getElementById("signup-role").value;
+        const password = document.getElementById("signup-password").value;
+        const msg = document.getElementById("signup-message");
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                name: name,
+                email: email,
+                phone: phone,
+                role: role,
+                createdAt: new Date()
+            });
+
+            msg.className = "message success";
+            msg.textContent = "✅ Account created! Redirecting...";
+            setTimeout(() => window.location.href = "index.html", 1500);
+        } catch (error) {
+            msg.className = "message error";
+            msg.textContent = "❌ " + error.message;
+        }
+    }
+
+    window.showLogin = function() {
+        document.getElementById("login-form").style.display = "block";
+        document.getElementById("signup-form").style.display = "none";
+        document.getElementById("login-tab").className = "tab active";
+        document.getElementById("signup-tab").className = "tab";
+    }
+
+    window.showSignup = function() {
+        document.getElementById("signup-form").style.display = "block";
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("signup-tab").className = "tab active";
+        document.getElementById("login-tab").className = "tab";
+    }
+</script>
+
+</body>
+</html>
