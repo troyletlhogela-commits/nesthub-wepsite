@@ -372,10 +372,10 @@
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
     </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+<script>
     const firebaseConfig = {
         apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
         authDomain: "nesthub-5e83c.firebaseapp.com",
@@ -386,19 +386,19 @@
         measurementId: "G-CDC0SB1Q4D"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
 
-    window.submitListing = async function() {
-        const title = document.getElementById("title").value;
-        const type = document.getElementById("type").value;
-        const location = document.getElementById("location").value;
-        const price = document.getElementById("price").value;
-        const bedrooms = document.getElementById("bedrooms").value;
-        const description = document.getElementById("description").value;
-        const phone = document.getElementById("phone").value;
-        const email = document.getElementById("email").value;
-        const msg = document.getElementById("submit-message");
+    function submitListing() {
+        var title = document.getElementById("title").value;
+        var type = document.getElementById("type").value;
+        var location = document.getElementById("location").value;
+        var price = document.getElementById("price").value;
+        var bedrooms = document.getElementById("bedrooms").value;
+        var description = document.getElementById("description").value;
+        var phone = document.getElementById("phone").value;
+        var email = document.getElementById("email").value;
+        var msg = document.getElementById("submit-message");
 
         if(!title || !type || !location || !price || !description || !phone || !email) {
             msg.className = "message error";
@@ -407,31 +407,25 @@
             return;
         }
 
-        try {
-            await addDoc(collection(db, "listings"), {
-                title: title,
-                type: type,
-                location: location,
-                price: price,
-                bedrooms: bedrooms,
-                description: description,
-                phone: phone,
-                email: email,
-                verified: false,
-                createdAt: new Date()
-            });
-
+        db.collection("listings").add({
+            title: title,
+            type: type,
+            location: location,
+            price: price,
+            bedrooms: bedrooms,
+            description: description,
+            phone: phone,
+            email: email,
+            verified: false,
+            createdAt: new Date()
+        }).then(function() {
             msg.className = "message success";
             msg.textContent = "✅ Listing submitted! We will review it within 24 hours.";
             msg.style.display = "block";
-
-        } catch(error) {
+        }).catch(function(error) {
             msg.className = "message error";
             msg.textContent = "❌ Error: " + error.message;
             msg.style.display = "block";
-        }
+        });
     }
 </script>
-
-</body>
-</html>
