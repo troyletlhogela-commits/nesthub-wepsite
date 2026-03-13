@@ -5,57 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NestHub</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
 
+        /* NAVBAR */
         .navbar {
             background-color: #1A3C6E;
-            padding: 20px 40px;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .navbar h1 {
             color: white;
             margin: 0;
-            font-size: 28px;
+            font-size: 26px;
         }
 
         .navbar h1 span {
             color: #F5A623;
         }
 
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
         .nav-links a {
             color: white;
             text-decoration: none;
-            margin-left: 20px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .nav-links a:hover {
             color: #F5A623;
         }
 
+        /* HERO */
         .hero {
             background-color: #1A3C6E;
             color: white;
             text-align: center;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
 
         .hero h2 {
-            font-size: 40px;
+            font-size: 36px;
             margin-bottom: 10px;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 16px;
             color: #F5A623;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .search-bar {
@@ -67,10 +81,10 @@
 
         .search-bar select,
         .search-bar input {
-            padding: 14px 20px;
+            padding: 12px 16px;
             border-radius: 8px;
             border: none;
-            font-size: 15px;
+            font-size: 14px;
             width: 200px;
         }
 
@@ -78,9 +92,9 @@
             background-color: #F5A623;
             color: white;
             border: none;
-            padding: 14px 30px;
+            padding: 12px 24px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -89,14 +103,15 @@
             background-color: #d4891e;
         }
 
+        /* LISTINGS */
         .listings-section {
-            padding: 60px 40px;
+            padding: 40px 24px;
         }
 
         .listings-section h3 {
-            font-size: 28px;
+            font-size: 24px;
             color: #1A3C6E;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .listings-grid {
@@ -114,11 +129,11 @@
 
         .card-image {
             background-color: #d0e4f7;
-            height: 160px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
+            font-size: 44px;
             position: relative;
         }
 
@@ -135,37 +150,37 @@
         }
 
         .card-body {
-            padding: 16px;
+            padding: 14px;
         }
 
         .card-body h4 {
             margin: 0 0 4px 0;
             color: #1A3C6E;
-            font-size: 17px;
+            font-size: 16px;
         }
 
         .card-body p {
-            margin: 0 0 10px 0;
+            margin: 0 0 8px 0;
             color: gray;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .card-price {
             color: #F5A623;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .view-btn {
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
             background-color: #1A3C6E;
             color: white;
             text-align: center;
             padding: 10px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
@@ -173,20 +188,21 @@
             background-color: #F5A623;
         }
 
+        /* CATEGORIES */
         .categories-section {
-            padding: 20px 40px 60px 40px;
+            padding: 20px 24px 40px 24px;
             background-color: white;
         }
 
         .categories-section h3 {
-            font-size: 28px;
+            font-size: 24px;
             color: #1A3C6E;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .categories-grid {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
@@ -194,10 +210,11 @@
             background-color: #f0f4ff;
             border: 2px solid #1A3C6E;
             border-radius: 12px;
-            padding: 24px 32px;
+            padding: 20px 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
+            flex: 1;
             min-width: 120px;
         }
 
@@ -211,29 +228,30 @@
         }
 
         .category-card span {
-            font-size: 36px;
+            font-size: 32px;
         }
 
         .category-card p {
             margin: 8px 0 0 0;
             font-weight: bold;
             color: #1A3C6E;
-            font-size: 15px;
+            font-size: 14px;
         }
 
+        /* LOCATIONS */
         .locations-section {
-            padding: 60px 40px;
+            padding: 40px 24px;
         }
 
         .locations-section h3 {
-            font-size: 28px;
+            font-size: 24px;
             color: #1A3C6E;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .locations-grid {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -241,11 +259,11 @@
             background-color: #fff8ec;
             border: 2px solid #F5A623;
             color: #1A3C6E;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.2s;
         }
 
@@ -254,124 +272,113 @@
             color: white;
         }
 
-        /* Why Choose NestHub */
+        /* WHY SECTION */
         .why-section {
             background-color: #1A3C6E;
-            padding: 60px 40px;
+            padding: 60px 24px;
             text-align: center;
         }
 
         .why-section h3 {
             color: white;
-            font-size: 28px;
-            margin-bottom: 40px;
+            font-size: 26px;
+            margin-bottom: 32px;
         }
 
         .why-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .why-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 30px;
-            width: 220px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .why-card span {
-            font-size: 40px;
-        }
-
-        .why-card h4 {
-            color: #1A3C6E;
-            margin: 12px 0 8px 0;
-            font-size: 17px;
-        }
-
-        .why-card p {
-            color: gray;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* CTA Banner */
-        .cta-section {
-            background-color: #F5A623;
-            padding: 60px 40px;
-            text-align: center;
-        }
-
-        .cta-section h3 {
-            color: white;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .cta-section p {
-            color: white;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .cta-buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
         }
 
+        .why-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .why-card span {
+            font-size: 36px;
+        }
+
+        .why-card h4 {
+            color: #1A3C6E;
+            margin: 10px 0 6px 0;
+            font-size: 16px;
+        }
+
+        .why-card p {
+            color: gray;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* CTA */
+        .cta-section {
+            background-color: #F5A623;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .cta-section h3 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .cta-section p {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
         .cta-btn-primary {
             background-color: #1A3C6E;
             color: white;
-            padding: 14px 32px;
+            padding: 12px 28px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .cta-btn-secondary {
             background-color: white;
             color: #1A3C6E;
-            padding: 14px 32px;
+            padding: 12px 28px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
         }
 
-        .cta-btn-primary:hover {
-            background-color: white;
-            color: #1A3C6E;
-        }
-
-        .cta-btn-secondary:hover {
-            background-color: #1A3C6E;
-            color: white;
-        }
-
-        /* Footer */
+        /* FOOTER */
         .footer {
             background-color: #1A3C6E;
             color: white;
-            padding: 50px 40px 30px 40px;
+            padding: 40px 24px 24px 24px;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
         .footer h2 {
             margin: 0 0 10px 0;
-            font-size: 24px;
+            font-size: 22px;
         }
 
         .footer h2 span {
@@ -380,14 +387,14 @@
 
         .footer p {
             color: #a0b4cc;
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.6;
         }
 
         .footer h4 {
             color: #F5A623;
-            margin: 0 0 16px 0;
-            font-size: 16px;
+            margin: 0 0 14px 0;
+            font-size: 15px;
         }
 
         .footer-links {
@@ -397,13 +404,13 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .footer-links a {
             color: #a0b4cc;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .footer-links a:hover {
@@ -412,31 +419,126 @@
 
         .social-links {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .social-links a {
             background-color: #F5A623;
             color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-        }
-
-        .social-links a:hover {
-            background-color: white;
-            color: #1A3C6E;
         }
 
         .footer-bottom {
             border-top: 1px solid #2a5298;
-            padding-top: 20px;
+            padding-top: 16px;
             text-align: center;
             color: #a0b4cc;
-            font-size: 13px;
+            font-size: 12px;
+        }
+
+        /* ================================
+           MEDIA QUERIES — RESPONSIVE
+        ================================ */
+
+        /* Tablet — 768px and below */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 26px;
+            }
+
+            .search-bar select,
+            .search-bar input {
+                width: 100%;
+            }
+
+            .search-bar button {
+                width: 100%;
+            }
+
+            .listings-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .why-card {
+                width: 160px;
+            }
+        }
+
+        /* Mobile — 480px and below */
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar select,
+            .search-bar input,
+            .search-bar button {
+                width: 100%;
+            }
+
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .categories-grid {
+                flex-direction: column;
+            }
+
+            .category-card {
+                min-width: unset;
+            }
+
+            .why-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .why-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer h2 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -446,10 +548,11 @@
     <div class="navbar">
         <h1>Nest<span>Hub</span></h1>
         <div class="nav-links">
+            <a href="index.html">Home</a>
             <a href="listings.html">Browse Listings</a>
-<a href="postproperty.html">Post Property</a>
-<a href="about.html">About Us</a>
-<a href="#">Log In</a>
+            <a href="postproperty.html">Post Property</a>
+            <a href="about.html">About Us</a>
+            <a href="login.html">Log In</a>
         </div>
     </div>
 
@@ -483,59 +586,42 @@
     <div class="listings-section">
         <h3>Featured Listings</h3>
         <div class="listings-grid">
-
             <div class="card">
-                <div class="card-image">
-                    🏠
-                    <span class="verified-badge">✔ Verified</span>
-                </div>
+                <div class="card-image">🏠<span class="verified-badge">✔ Verified</span></div>
                 <div class="card-body">
                     <h4>Room</h4>
                     <p>📍 Mogoditsane</p>
                     <p class="card-price">P1,500/month</p>
-                    <a href="#" class="view-btn">View Details</a>
+                    <a href="listings.html" class="view-btn">View Details</a>
                 </div>
             </div>
-
             <div class="card">
-                <div class="card-image">
-                    🏢
-                    <span class="verified-badge">✔ Verified</span>
-                </div>
+                <div class="card-image">🏢<span class="verified-badge">✔ Verified</span></div>
                 <div class="card-body">
                     <h4>Apartment</h4>
                     <p>📍 Bontleng</p>
                     <p class="card-price">P3,000/month</p>
-                    <a href="#" class="view-btn">View Details</a>
+                    <a href="listings.html" class="view-btn">View Details</a>
                 </div>
             </div>
-
             <div class="card">
-                <div class="card-image">
-                    🏡
-                    <span class="verified-badge">✔ Verified</span>
-                </div>
+                <div class="card-image">🏡<span class="verified-badge">✔ Verified</span></div>
                 <div class="card-body">
                     <h4>House</h4>
                     <p>📍 Kgale</p>
                     <p class="card-price">P4,500/month</p>
-                    <a href="#" class="view-btn">View Details</a>
+                    <a href="listings.html" class="view-btn">View Details</a>
                 </div>
             </div>
-
             <div class="card">
-                <div class="card-image">
-                    🛏️
-                    <span class="verified-badge">✔ Verified</span>
-                </div>
+                <div class="card-image">🛏️<span class="verified-badge">✔ Verified</span></div>
                 <div class="card-body">
                     <h4>Student Housing</h4>
                     <p>📍 Tlokweng</p>
                     <p class="card-price">P1,200/month</p>
-                    <a href="#" class="view-btn">View Details</a>
+                    <a href="listings.html" class="view-btn">View Details</a>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -543,26 +629,11 @@
     <div class="categories-section">
         <h3>Browse by Category</h3>
         <div class="categories-grid">
-            <div class="category-card">
-                <span>🛏️</span>
-                <p>Rooms</p>
-            </div>
-            <div class="category-card">
-                <span>🏢</span>
-                <p>Apartments</p>
-            </div>
-            <div class="category-card">
-                <span>🏡</span>
-                <p>Houses</p>
-            </div>
-            <div class="category-card">
-                <span>🎓</span>
-                <p>Student Housing</p>
-            </div>
-            <div class="category-card">
-                <span>🛋️</span>
-                <p>Furnished</p>
-            </div>
+            <div class="category-card"><span>🛏️</span><p>Rooms</p></div>
+            <div class="category-card"><span>🏢</span><p>Apartments</p></div>
+            <div class="category-card"><span>🏡</span><p>Houses</p></div>
+            <div class="category-card"><span>🎓</span><p>Student Housing</p></div>
+            <div class="category-card"><span>🛋️</span><p>Furnished</p></div>
         </div>
     </div>
 
@@ -583,26 +654,10 @@
     <div class="why-section">
         <h3>Why Choose NestHub?</h3>
         <div class="why-grid">
-            <div class="why-card">
-                <span>✅</span>
-                <h4>Verified Listings</h4>
-                <p>Every property is checked and verified before going live</p>
-            </div>
-            <div class="why-card">
-                <span>🤝</span>
-                <h4>Direct Contact</h4>
-                <p>Connect directly with landlords — no middlemen</p>
-            </div>
-            <div class="why-card">
-                <span>🔒</span>
-                <h4>Safe & Secure</h4>
-                <p>Your information is always protected on our platform</p>
-            </div>
-            <div class="why-card">
-                <span>⚡</span>
-                <h4>Fast & Easy</h4>
-                <p>Find your next home in minutes not weeks</p>
-            </div>
+            <div class="why-card"><span>✅</span><h4>Verified Listings</h4><p>Every property is checked before going live</p></div>
+            <div class="why-card"><span>🤝</span><h4>Direct Contact</h4><p>Connect directly with landlords</p></div>
+            <div class="why-card"><span>🔒</span><h4>Safe & Secure</h4><p>Your information is always protected</p></div>
+            <div class="why-card"><span>⚡</span><h4>Fast & Easy</h4><p>Find your next home in minutes</p></div>
         </div>
     </div>
 
@@ -611,8 +666,8 @@
         <h3>Rent or List Your Property</h3>
         <p>Join NestHub Today and find your perfect home</p>
         <div class="cta-buttons">
-            <a href="#" class="cta-btn-primary">Browse Listings</a>
-            <a href="#" class="cta-btn-secondary">Post Your Property</a>
+            <a href="listings.html" class="cta-btn-primary">Browse Listings</a>
+            <a href="postproperty.html" class="cta-btn-secondary">Post Your Property</a>
         </div>
     </div>
 
@@ -621,7 +676,7 @@
         <div class="footer-grid">
             <div>
                 <h2>Nest<span>Hub</span></h2>
-                <p>NestHub is Botswana's trusted platform to find and list rental properties, helping people find their place home quickly and easily.</p>
+                <p>NestHub is Botswana's trusted platform to find and list rental properties.</p>
                 <div class="social-links">
                     <a href="#">Facebook</a>
                     <a href="#">Instagram</a>
@@ -631,17 +686,15 @@
             <div>
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
                     <li><a href="#">Contact</a></li>
-                    <li><a href="#">Careers</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Browse Listings</a></li>
-                    <li><a href="#">Post Property</a></li>
-                    <li><a href="#">Help Center</a></li>
+                    <li><a href="listings.html">Browse Listings</a></li>
+                    <li><a href="postproperty.html">Post Property</a></li>
                 </ul>
             </div>
             <div>
