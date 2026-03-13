@@ -67,7 +67,6 @@
             margin: 0 auto;
         }
 
-        /* Filter Sidebar */
         .filter-sidebar {
             background-color: white;
             border-radius: 16px;
@@ -105,27 +104,6 @@
             box-sizing: border-box;
         }
 
-        .filter-group select:focus,
-        .filter-group input:focus {
-            outline: none;
-            border-color: #1A3C6E;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: normal;
-            color: #444;
-            cursor: pointer;
-        }
-
         .filter-btn {
             width: 100%;
             background-color: #1A3C6E;
@@ -143,7 +121,6 @@
             background-color: #F5A623;
         }
 
-        /* Listings Grid */
         .listings-right h3 {
             color: #1A3C6E;
             font-size: 22px;
@@ -190,6 +167,18 @@
             font-weight: bold;
         }
 
+        .pending-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #F5A623;
+            color: white;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
         .card-body {
             padding: 16px;
         }
@@ -212,22 +201,6 @@
             font-size: 16px;
         }
 
-        .card-tags {
-            display: flex;
-            gap: 6px;
-            margin: 8px 0;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background-color: #f0f4ff;
-            color: #1A3C6E;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
         .view-btn {
             display: block;
             margin-top: 12px;
@@ -239,13 +212,29 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: bold;
+            cursor: pointer;
+            border: none;
+            width: 100%;
         }
 
         .view-btn:hover {
             background-color: #F5A623;
         }
 
-        /* Footer */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #1A3C6E;
+            font-size: 18px;
+        }
+
+        .no-listings {
+            text-align: center;
+            padding: 40px;
+            color: gray;
+            font-size: 16px;
+        }
+
         .footer {
             background-color: #1A3C6E;
             color: white;
@@ -278,9 +267,9 @@
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="listings.html">Browse Listings</a>
-            <a href="post-property.html">Post Property</a>
+            <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="#">Log In</a>
+            <a href="login.html">Log In</a>
         </div>
     </div>
 
@@ -299,8 +288,8 @@
 
             <div class="filter-group">
                 <label>📍 Location</label>
-                <select>
-                    <option>All Locations</option>
+                <select id="filter-location">
+                    <option value="">All Locations</option>
                     <option>Gaborone</option>
                     <option>Tlokweng</option>
                     <option>Kgale</option>
@@ -312,8 +301,8 @@
 
             <div class="filter-group">
                 <label>🏠 Property Type</label>
-                <select>
-                    <option>All Types</option>
+                <select id="filter-type">
+                    <option value="">All Types</option>
                     <option>Room</option>
                     <option>Apartment</option>
                     <option>House</option>
@@ -323,142 +312,17 @@
 
             <div class="filter-group">
                 <label>💰 Max Price (P)</label>
-                <input type="number" placeholder="e.g. 3000"/>
+                <input type="number" id="filter-price" placeholder="e.g. 3000"/>
             </div>
 
-            <div class="filter-group">
-                <label>🛏️ Bedrooms</label>
-                <select>
-                    <option>Any</option>
-                    <option>1 Bedroom</option>
-                    <option>2 Bedrooms</option>
-                    <option>3 Bedrooms</option>
-                    <option>4+ Bedrooms</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label>✨ Amenities</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox"/> WiFi</label>
-                    <label><input type="checkbox"/> Water Included</label>
-                    <label><input type="checkbox"/> Electricity Included</label>
-                    <label><input type="checkbox"/> Parking</label>
-                    <label><input type="checkbox"/> Furnished</label>
-                    <label><input type="checkbox"/> Security</label>
-                </div>
-            </div>
-
-            <button class="filter-btn">Apply Filters</button>
+            <button class="filter-btn" onclick="filterListings()">Apply Filters</button>
         </div>
 
         <!-- Listings -->
         <div class="listings-right">
-            <h3>Showing 6 Properties</h3>
-            <div class="listings-grid">
-
-                <div class="card">
-                    <div class="card-image">
-                        🏠
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>Room</h4>
-                        <p>📍 Mogoditsane</p>
-                        <div class="card-tags">
-                            <span class="tag">WiFi</span>
-                            <span class="tag">Water</span>
-                        </div>
-                        <p class="card-price">P1,500/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-image">
-                        🏢
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>Apartment</h4>
-                        <p>📍 Bontleng</p>
-                        <div class="card-tags">
-                            <span class="tag">Parking</span>
-                            <span class="tag">Security</span>
-                        </div>
-                        <p class="card-price">P3,000/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-image">
-                        🏡
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>House</h4>
-                        <p>📍 Kgale</p>
-                        <div class="card-tags">
-                            <span class="tag">Furnished</span>
-                            <span class="tag">Parking</span>
-                        </div>
-                        <p class="card-price">P4,500/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-image">
-                        🛏️
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>Student Housing</h4>
-                        <p>📍 Tlokweng</p>
-                        <div class="card-tags">
-                            <span class="tag">WiFi</span>
-                            <span class="tag">Water</span>
-                        </div>
-                        <p class="card-price">P1,200/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-image">
-                        🏠
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>Room</h4>
-                        <p>📍 Broadhurst</p>
-                        <div class="card-tags">
-                            <span class="tag">Electricity</span>
-                            <span class="tag">Security</span>
-                        </div>
-                        <p class="card-price">P1,800/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-image">
-                        🏢
-                        <span class="verified-badge">✔ Verified</span>
-                    </div>
-                    <div class="card-body">
-                        <h4>Apartment</h4>
-                        <p>📍 Gaborone</p>
-                        <div class="card-tags">
-                            <span class="tag">WiFi</span>
-                            <span class="tag">Furnished</span>
-                        </div>
-                        <p class="card-price">P3,500/month</p>
-                        <a href="#" class="view-btn">View Details</a>
-                    </div>
-                </div>
-
+            <h3 id="listings-count">Loading listings...</h3>
+            <div class="listings-grid" id="listings-grid">
+                <div class="loading">⏳ Loading properties...</div>
             </div>
         </div>
     </div>
@@ -468,6 +332,97 @@
         <h2>Nest<span>Hub</span></h2>
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
     </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+        authDomain: "nesthub-5e83c.firebaseapp.com",
+        projectId: "nesthub-5e83c",
+        storageBucket: "nesthub-5e83c.firebasestorage.app",
+        messagingSenderId: "596386242109",
+        appId: "1:596386242109:web:5a1e77e0db91f6a6119454",
+        measurementId: "G-CDC0SB1Q4D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allListings = [];
+
+    function getEmoji(type) {
+        if(type === "Room") return "🛏️";
+        if(type === "Apartment") return "🏢";
+        if(type === "House") return "🏡";
+        if(type === "Student Housing") return "🎓";
+        return "🏠";
+    }
+
+    function displayListings(listings) {
+        const grid = document.getElementById("listings-grid");
+        const count = document.getElementById("listings-count");
+
+        if(listings.length === 0) {
+            grid.innerHTML = '<div class="no-listings">😔 No listings found. Try different filters.</div>';
+            count.textContent = "No properties found";
+            return;
+        }
+
+        count.textContent = Showing ${listings.length} Properties;
+        grid.innerHTML = listings.map(listing => `
+            <div class="card">
+                <div class="card-image">
+                    ${getEmoji(listing.type)}
+                    <span class="${listing.verified ? 'verified-badge' : 'pending-badge'}">
+                        ${listing.verified ? '✔ Verified' : '⏳ Pending'}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <h4>${listing.title}</h4>
+                    <p>📍 ${listing.location}</p>
+                    <p>🛏️ ${listing.bedrooms}</p>
+                    <p class="card-price">P${listing.price}/month</p>
+                    <button class="view-btn" onclick="contactLandlord('${listing.phone}', '${listing.email}')">
+                        📞 Contact Landlord
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function loadListings() {
+        try {
+            const snapshot = await getDocs(collection(db, "listings"));
+            allListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayListings(allListings);
+        } catch(error) {
+            document.getElementById("listings-grid").innerHTML = 
+                '<div class="no-listings">❌ Error loading listings. Please refresh.</div>';
+        }
+    }
+
+    window.filterListings = function() {
+        const location = document.getElementById("filter-location").value;
+        const type = document.getElementById("filter-type").value;
+        const maxPrice = document.getElementById("filter-price").value;
+
+        let filtered = allListings;
+
+        if(location) filtered = filtered.filter(l => l.location === location);
+        if(type) filtered = filtered.filter(l => l.type === type);
+        if(maxPrice) filtered = filtered.filter(l => parseInt(l.price) <= parseInt(maxPrice));
+
+        displayListings(filtered);
+    }
+
+    window.contactLandlord = function(phone, email) {
+        alert(📞 Contact this landlord:\n\nPhone: ${phone}\nEmail: ${email});
+    }
+
+    loadListings();
+</script>
 
 </body>
 </html>
