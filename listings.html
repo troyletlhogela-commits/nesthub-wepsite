@@ -404,8 +404,20 @@
         function contactLandlord(phone, email) {
             alert("📞 Contact this landlord:\n\nPhone: " + phone + "\nEmail: " + email);
         }
+var params = new URLSearchParams(window.location.search);
+var loc = params.get('location');
+var typ = params.get('type');
+var pri = params.get('price');
 
-        loadListings();
+if(loc) document.getElementById('filter-location').value = loc;
+if(typ) document.getElementById('filter-type').value = typ;
+if(pri) document.getElementById('filter-price').value = pri;
+
+loadListings();
+
+if(loc || typ || pri) {
+    setTimeout(filterListings, 1000);
+};
     </script>
 
 </body>
