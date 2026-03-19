@@ -5,341 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us — NestHub</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+
+        .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .navbar h1 { color: white; font-size: 26px; }
+        .navbar h1 span { color: #F5A623; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; }
+        .nav-links a:hover { color: #F5A623; }
+
+        .page-header { background-color: #1A3C6E; padding: 60px 24px; text-align: center; color: white; }
+        .page-header h2 { font-size: 36px; margin-bottom: 12px; }
+        .page-header p { color: #F5A623; font-size: 16px; font-style: italic; }
+
+        .story-section { max-width: 800px; margin: 50px auto; padding: 0 24px; text-align: center; }
+        .story-section h3 { color: #1A3C6E; font-size: 28px; margin-bottom: 20px; }
+        .story-section p { color: #555; font-size: 16px; line-height: 1.8; margin-bottom: 16px; }
+
+        .mv-section { background-color: #1A3C6E; padding: 60px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .mv-card { background-color: white; border-radius: 16px; padding: 30px; text-align: center; }
+        .mv-card span { font-size: 44px; }
+        .mv-card h3 { color: #1A3C6E; font-size: 22px; margin: 14px 0 10px 0; }
+        .mv-card p { color: #555; font-size: 15px; line-height: 1.7; margin: 0; }
+
+        .values-section { padding: 60px 24px; text-align: center; }
+        .values-section h3 { color: #1A3C6E; font-size: 28px; margin-bottom: 32px; }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .value-card { background-color: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-top: 4px solid #F5A623; }
+        .value-card span { font-size: 36px; }
+        .value-card h4 { color: #1A3C6E; font-size: 17px; margin: 10px 0 8px 0; }
+        .value-card p { color: #777; font-size: 13px; line-height: 1.6; margin: 0; }
+
+        .team-section { padding: 60px 24px; text-align: center; background-color: white; }
+        .team-section h3 { color: #1A3C6E; font-size: 28px; margin-bottom: 32px; }
+        .team-grid { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .team-card { background-color: #f0f4ff; border-radius: 16px; padding: 28px 24px; width: 200px; text-align: center; }
+        .team-avatar { width: 72px; height: 72px; background-color: #1A3C6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto; font-size: 28px; }
+        .team-card h4 { color: #1A3C6E; margin: 0 0 6px 0; font-size: 17px; }
+        .team-card p { color: #F5A623; font-size: 13px; font-weight: bold; margin: 0; }
+
+        .traction-section { background-color: #F5A623; padding: 60px 24px; text-align: center; }
+        .traction-section h3 { color: white; font-size: 28px; margin-bottom: 32px; }
+        .traction-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .traction-card { background-color: white; border-radius: 16px; padding: 24px 30px; text-align: center; min-width: 160px; flex: 1; max-width: 220px; }
+        .traction-card span { font-size: 36px; }
+        .traction-card h4 { color: #1A3C6E; font-size: 14px; margin: 10px 0 0 0; line-height: 1.4; }
+
+        .cta-section { background-color: #1A3C6E; padding: 60px 24px; text-align: center; }
+        .cta-section h3 { color: white; font-size: 28px; margin-bottom: 10px; }
+        .cta-section p { color: #F5A623; font-size: 16px; margin-bottom: 24px; }
+        .cta-btn { background-color: #F5A623; color: white; padding: 14px 36px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 15px; display: inline-block; }
+        .cta-btn:hover { background-color: white; color: #1A3C6E; }
+
+        .footer { background-color: #1A3C6E; color: white; padding: 30px 24px; text-align: center; border-top: 1px solid #2a5298; }
+        .footer h2 { margin: 0 0 8px 0; font-size: 22px; }
+        .footer h2 span { color: #F5A623; }
+        .footer p { color: #a0b4cc; font-size: 13px; margin: 0; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .page-header h2 { font-size: 28px; }
+            .mv-section { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-card { width: 160px; }
         }
 
-        .navbar {
-            background-color: #1A3C6E;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            color: white;
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .navbar h1 span {
-            color: #F5A623;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 15px;
-        }
-
-        .nav-links a:hover {
-            color: #F5A623;
-        }
-
-        /* Hero */
-        .page-header {
-            background-color: #1A3C6E;
-            padding: 80px 40px;
-            text-align: center;
-            color: white;
-        }
-
-        .page-header h2 {
-            font-size: 42px;
-            margin: 0 0 16px 0;
-        }
-
-        .page-header p {
-            color: #F5A623;
-            font-size: 18px;
-            margin: 0;
-            font-style: italic;
-        }
-
-        /* Our Story */
-        .story-section {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 0 40px;
-            text-align: center;
-        }
-
-        .story-section h3 {
-            color: #1A3C6E;
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        .story-section p {
-            color: #555;
-            font-size: 17px;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        /* Mission & Vision */
-        .mv-section {
-            background-color: #1A3C6E;
-            padding: 60px 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            max-width: 100%;
-        }
-
-        .mv-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 36px;
-            text-align: center;
-        }
-
-        .mv-card span {
-            font-size: 48px;
-        }
-
-        .mv-card h3 {
-            color: #1A3C6E;
-            font-size: 24px;
-            margin: 16px 0 12px 0;
-        }
-
-        .mv-card p {
-            color: #555;
-            font-size: 16px;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        /* Values */
-        .values-section {
-            padding: 60px 40px;
-            text-align: center;
-            background-color: #f5f5f5;
-        }
-
-        .values-section h3 {
-            color: #1A3C6E;
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .value-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border-top: 4px solid #F5A623;
-        }
-
-        .value-card span {
-            font-size: 40px;
-        }
-
-        .value-card h4 {
-            color: #1A3C6E;
-            font-size: 18px;
-            margin: 12px 0 8px 0;
-        }
-
-        .value-card p {
-            color: #777;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* Team */
-        .team-section {
-            padding: 60px 40px;
-            text-align: center;
-            background-color: white;
-        }
-
-        .team-section h3 {
-            color: #1A3C6E;
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-
-        .team-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .team-card {
-            background-color: #f0f4ff;
-            border-radius: 16px;
-            padding: 30px;
-            width: 200px;
-            text-align: center;
-        }
-
-        .team-avatar {
-            width: 80px;
-            height: 80px;
-            background-color: #1A3C6E;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px auto;
-            font-size: 32px;
-        }
-
-        .team-card h4 {
-            color: #1A3C6E;
-            margin: 0 0 6px 0;
-            font-size: 18px;
-        }
-
-        .team-card p {
-            color: #F5A623;
-            font-size: 14px;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        /* Traction */
-        .traction-section {
-            background-color: #F5A623;
-            padding: 60px 40px;
-            text-align: center;
-        }
-
-        .traction-section h3 {
-            color: white;
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-
-        .traction-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .traction-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 30px 40px;
-            text-align: center;
-            min-width: 180px;
-        }
-
-        .traction-card span {
-            font-size: 40px;
-        }
-
-        .traction-card h4 {
-            color: #1A3C6E;
-            font-size: 16px;
-            margin: 12px 0 0 0;
-        }
-
-        /* CTA */
-        .cta-section {
-            background-color: #1A3C6E;
-            padding: 60px 40px;
-            text-align: center;
-        }
-
-        .cta-section h3 {
-            color: white;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .cta-section p {
-            color: #F5A623;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .cta-btn {
-            background-color: #F5A623;
-            color: white;
-            padding: 14px 40px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .cta-btn:hover {
-            background-color: white;
-            color: #1A3C6E;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #1A3C6E;
-            color: white;
-            padding: 30px 40px;
-            text-align: center;
-            border-top: 1px solid #2a5298;
-        }
-
-        .footer h2 {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-        }
-
-        .footer h2 span {
-            color: #F5A623;
-        }
-
-        .footer p {
-            color: #a0b4cc;
-            font-size: 13px;
-            margin: 0;
+        @media (max-width: 480px) {
+            .navbar { flex-direction: column; align-items: flex-start; }
+            .nav-links { width: 100%; }
+            .page-header h2 { font-size: 24px; }
+            .page-header p { font-size: 14px; }
+            .story-section h3 { font-size: 22px; }
+            .story-section p { font-size: 15px; }
+            .mv-section { grid-template-columns: 1fr; padding: 40px 16px; gap: 20px; }
+            .values-grid { grid-template-columns: 1fr; }
+            .team-grid { flex-direction: column; align-items: center; }
+            .team-card { width: 100%; max-width: 300px; }
+            .traction-grid { flex-direction: column; align-items: center; }
+            .traction-card { width: 100%; max-width: 300px; }
+            .cta-section h3 { font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar">
         <h1>Nest<span>Hub</span></h1>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="listings.html">Browse Listings</a>
-            <a href="post-property.html">Post Property</a>
+            <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="#">Log In</a>
+            <a href="login.html">Log In</a>
         </div>
     </div>
 
-    <!-- Header -->
     <div class="page-header">
         <h2>We Are NestHub 🏠</h2>
         <p>"Find a place. Make it home."</p>
     </div>
 
-    <!-- Our Story -->
     <div class="story-section">
         <h3>Our Story</h3>
-        <p>We are three university students from Botswana who experienced firsthand how difficult it is to find safe, affordable accommodation. Every year thousands of students arrive in Gaborone and face the same painful struggle — searching through Facebook groups, dealing with unreliable landlords, and wasting weeks trying to find a place to call home.</p>
+        <p>We are students from two institutions the University of Botswana and Botswana Accountancy College who experienced firsthand how difficult it is to find safe, affordable accommodation. Every year thousands of students arrive in Gaborone and face the same painful struggle searching through Facebook groups, dealing with unreliable landlords, and wasting weeks trying to find a place to call home.</p>
         <p>We asked ourselves one question — <strong style="color:#1A3C6E;">why doesn't Botswana have a proper platform for this?</strong> We couldn't find a good answer. So we decided to build one ourselves.</p>
-        <p>NestHub was born out of that frustration — and out of a genuine desire to make life easier for every student and young professional in Botswana looking for a place to call home.</p>
+        <p>NestHub was born out of that frustration and out of a genuine desire to make life easier for every student and young professional in Botswana looking for a place to call home.</p>
     </div>
 
-    <!-- Mission & Vision -->
     <div class="mv-section">
         <div class="mv-card">
             <span>🎯</span>
@@ -353,96 +126,55 @@
         </div>
     </div>
 
-    <!-- Our Values -->
     <div class="values-section">
         <h3>What We Stand For</h3>
         <div class="values-grid">
-            <div class="value-card">
-                <span>🔒</span>
-                <h4>Trust</h4>
-                <p>Every listing on NestHub is verified. Our users can always rely on the accuracy and safety of what they find.</p>
-            </div>
-            <div class="value-card">
-                <span>🤝</span>
-                <h4>Accessibility</h4>
-                <p>Housing solutions for everyone — not just the wealthy. NestHub is built to serve all Batswana equally.</p>
-            </div>
-            <div class="value-card">
-                <span>⚡</span>
-                <h4>Simplicity</h4>
-                <p>Finding a home should be easy. Our platform is designed to be simple for anyone with a smartphone.</p>
-            </div>
-            <div class="value-card">
-                <span>🇧🇼</span>
-                <h4>Community</h4>
-                <p>NestHub is built for Batswana by Batswana. We understand this market because we live it every day.</p>
-            </div>
-            <div class="value-card">
-                <span>💡</span>
-                <h4>Innovation</h4>
-                <p>We are always improving and finding new ways to add value to our landlords and tenants.</p>
-            </div>
-            <div class="value-card">
-                <span>🚀</span>
-                <h4>Growth</h4>
-                <p>We started in Gaborone but our vision goes beyond — to serve all of Botswana and beyond.</p>
-            </div>
+            <div class="value-card"><span>🔒</span><h4>Trust</h4><p>Every listing on NestHub is verified. Our users can always rely on the accuracy and safety of what they find.</p></div>
+            <div class="value-card"><span>🤝</span><h4>Accessibility</h4><p>Housing solutions for everyone — not just the wealthy. NestHub is built to serve all Batswana equally.</p></div>
+            <div class="value-card"><span>⚡</span><h4>Simplicity</h4><p>Finding a home should be easy. Our platform is designed to be simple for anyone with a smartphone.</p></div>
+            <div class="value-card"><span>🇧🇼</span><h4>Community</h4><p>NestHub is built for Batswana by Batswana. We understand this market because we live it every day.</p></div>
+            <div class="value-card"><span>💡</span><h4>Innovation</h4><p>We are always improving and finding new ways to add value to our landlords and tenants.</p></div>
+            <div class="value-card"><span>🚀</span><h4>Growth</h4><p>We started in Gaborone but our vision goes beyond — to serve all of Botswana and beyond.</p></div>
         </div>
     </div>
 
-    <!-- The Team -->
     <div class="team-section">
         <h3>Meet The Founders</h3>
         <div class="team-grid">
             <div class="team-card">
                 <div class="team-avatar">👤</div>
                 <h4>Kgotso Kehakgametse</h4>
-                <p>head of operations and technology</p>
+                <p>Head of Operations & Technology</p>
             </div>
             <div class="team-card">
                 <div class="team-avatar">👤</div>
                 <h4>Thabiso Semadi</h4>
-                <p>Head of partnership and business development</p>
+                <p>Head of Partnerships & Business Development</p>
             </div>
             <div class="team-card">
                 <div class="team-avatar">👤</div>
                 <h4>Troy Letlhogela</h4>
-                <p>head of brand and growth strategy/p>
+                <p>Head of Brand & Growth Strategy</p>
             </div>
         </div>
     </div>
 
-    <!-- Traction -->
     <div class="traction-section">
         <h3>Where We Are So Far 🚀</h3>
         <div class="traction-grid">
-            <div class="traction-card">
-                <span>🏛️</span>
-                <h4>UB Director of Student Welfare Interest</h4>
-            </div>
-            <div class="traction-card">
-                <span>🎓</span>
-                <h4>BAC Minister of Hostels Connection</h4>
-            </div>
-            <div class="traction-card">
-                <span>🏠</span>
-                <h4>First Landlord Already On Board</h4>
-            </div>
-            <div class="traction-card">
-                <span>💻</span>
-                <h4>Platform Built & Ready</h4>
-            </div>
+            <div class="traction-card"><span>🏛️</span><h4>UB Director of Student Welfare Interest</h4></div>
+            <div class="traction-card"><span>🎓</span><h4>BAC Minister of Hostels Connection</h4></div>
+            <div class="traction-card"><span>🏠</span><h4>First Landlord Already On Board</h4></div>
+            <div class="traction-card"><span>💻</span><h4>Platform Built & Live</h4></div>
         </div>
     </div>
 
-    <!-- CTA -->
     <div class="cta-section">
         <h3>Want to be part of the NestHub story?</h3>
         <p>Find your next home or list your property today</p>
         <a href="listings.html" class="cta-btn">Browse Listings</a>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <h2>Nest<span>Hub</span></h2>
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
