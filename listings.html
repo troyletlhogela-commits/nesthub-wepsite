@@ -401,9 +401,11 @@
             displayListings(filtered);
         }
 
-        function contactLandlord(phone, email) {
-            alert("📞 Contact this landlord:\n\nPhone: " + phone + "\nEmail: " + email);
-        }
+      function contactLandlord(phone, email) {
+    var whatsappNumber = "267" + phone.replace(/^0/, "");
+    var message = "Hi, I found your listing on NestHub and I am interested in the property. Please get back to me.";
+    var whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+    window.open(whatsappUrl, "_blank");
 var params = new URLSearchParams(window.location.search);
 var loc = params.get('location');
 var typ = params.get('type');
