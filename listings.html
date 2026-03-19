@@ -5,422 +5,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Listings — NestHub</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-
-        .navbar {
-            background-color: #1A3C6E;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h1 {
-            color: white;
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .navbar h1 span {
-            color: #F5A623;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 15px;
-        }
-
-        .nav-links a:hover {
-            color: #F5A623;
-        }
-
-        .page-header {
-            background-color: #1A3C6E;
-            padding: 40px;
-            text-align: center;
-            color: white;
-        }
-
-        .page-header h2 {
-            font-size: 36px;
-            margin: 0 0 10px 0;
-        }
-
-        .page-header p {
-            color: #F5A623;
-            font-size: 16px;
-            margin: 0;
-        }
-
-        .listings-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 30px;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .filter-sidebar {
-            background-color: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            height: fit-content;
-        }
-
-        .filter-sidebar h3 {
-            color: #1A3C6E;
-            margin: 0 0 20px 0;
-            font-size: 20px;
-        }
-
-        .filter-group {
-            margin-bottom: 24px;
-        }
-
-        .filter-group label {
-            display: block;
-            color: #1A3C6E;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .filter-group select,
-        .filter-group input {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1.5px solid #d0d8e4;
-            font-size: 14px;
-            color: #333;
-            box-sizing: border-box;
-        }
-
-        .filter-btn {
-            width: 100%;
-            background-color: #1A3C6E;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .filter-btn:hover {
-            background-color: #F5A623;
-        }
-
-        .listings-right h3 {
-            color: #1A3C6E;
-            font-size: 22px;
-            margin: 0 0 20px 0;
-        }
-
-        .listings-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-        }
-
-        .card-image {
-            background-color: #d0e4f7;
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            position: relative;
-        }
-
-        .verified-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #28a745;
-            color: white;
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        .pending-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #F5A623;
-            color: white;
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        .card-body {
-            padding: 16px;
-        }
-
-        .card-body h4 {
-            margin: 0 0 4px 0;
-            color: #1A3C6E;
-            font-size: 17px;
-        }
-
-        .card-body p {
-            margin: 0 0 6px 0;
-            color: gray;
-            font-size: 14px;
-        }
-
-        .card-price {
-            color: #F5A623;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .view-btn {
-            display: block;
-            margin-top: 12px;
-            background-color: #1A3C6E;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-        }
-
-        .view-btn:hover {
-            background-color: #F5A623;
-        }
-
-        .status-msg {
-            text-align: center;
-            padding: 40px;
-            color: #1A3C6E;
-            font-size: 18px;
-            grid-column: 1/-1;
-        }
-
-        .footer {
-            background-color: #1A3C6E;
-            color: white;
-            padding: 30px 40px;
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .footer p {
-            color: #a0b4cc;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .footer h2 {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-        }
-
-        .footer h2 span {
-            color: #F5A623;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+        .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .navbar h1 { color: white; font-size: 26px; }
+        .navbar h1 span { color: #F5A623; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 16px; font-size: 14px; }
+        .nav-links a:hover { color: #F5A623; }
+        .page-header { background-color: #1A3C6E; padding: 40px; text-align: center; color: white; }
+        .page-header h2 { font-size: 32px; margin-bottom: 8px; }
+        .page-header p { color: #F5A623; font-size: 15px; }
+        .main { display: grid; grid-template-columns: 260px 1fr; gap: 24px; padding: 32px 24px; max-width: 1200px; margin: 0 auto; }
+        .sidebar { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); height: fit-content; }
+        .sidebar h3 { color: #1A3C6E; margin-bottom: 20px; font-size: 18px; }
+        .filter-group { margin-bottom: 20px; }
+        .filter-group label { display: block; color: #1A3C6E; font-weight: bold; margin-bottom: 6px; font-size: 13px; }
+        .filter-group select, .filter-group input { width: 100%; padding: 10px; border-radius: 8px; border: 1.5px solid #d0d8e4; font-size: 13px; }
+        .filter-btn { width: 100%; background: #1A3C6E; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .filter-btn:hover { background: #F5A623; }
+        .right h3 { color: #1A3C6E; font-size: 20px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-4px); }
+        .card-img { background: #d0e4f7; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; position: relative; }
+        .verified { position: absolute; top: 8px; left: 8px; background: #28a745; color: white; font-size: 10px; padding: 3px 7px; border-radius: 5px; font-weight: bold; }
+        .pending { position: absolute; top: 8px; left: 8px; background: #F5A623; color: white; font-size: 10px; padding: 3px 7px; border-radius: 5px; font-weight: bold; }
+        .card-body { padding: 14px; }
+        .card-body h4 { color: #1A3C6E; margin-bottom: 4px; font-size: 15px; }
+        .card-body p { color: gray; font-size: 13px; margin-bottom: 4px; }
+        .price { color: #F5A623; font-weight: bold; font-size: 15px; }
+        .wa-btn { display: block; margin-top: 10px; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; border: none; width: 100%; cursor: pointer; }
+        .wa-btn:hover { background: #128C7E; }
+        .status { text-align: center; padding: 40px; color: #1A3C6E; font-size: 16px; grid-column: 1/-1; }
+        .footer { background: #1A3C6E; color: white; padding: 24px; text-align: center; margin-top: 40px; }
+        .footer h2 { margin-bottom: 6px; font-size: 20px; }
+        .footer h2 span { color: #F5A623; }
+        .footer p { color: #a0b4cc; font-size: 12px; }
+        @media (max-width: 768px) { .main { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <h1>Nest<span>Hub</span></h1>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="listings.html">Browse Listings</a>
-            <a href="postproperty.html">Post Property</a>
-            <a href="about.html">About Us</a>
-            <a href="login.html">Log In</a>
+<div class="navbar">
+    <h1>Nest<span>Hub</span></h1>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="listings.html">Browse Listings</a>
+        <a href="postproperty.html">Post Property</a>
+        <a href="about.html">About Us</a>
+        <a href="login.html">Log In</a>
+    </div>
+</div>
+
+<div class="page-header">
+    <h2>Browse All Listings</h2>
+    <p>Find your perfect home in Botswana</p>
+</div>
+
+<div class="main">
+    <div class="sidebar">
+        <h3>🔍 Filter Listings</h3>
+        <div class="filter-group">
+            <label>📍 Location</label>
+            <select id="f-location">
+                <option value="">All Locations</option>
+                <option>Gaborone</option>
+                <option>Tlokweng</option>
+                <option>Kgale</option>
+                <option>Broadhurst</option>
+                <option>Mogoditsane</option>
+                <option>Bontleng</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>🏠 Property Type</label>
+            <select id="f-type">
+                <option value="">All Types</option>
+                <option>Room</option>
+                <option>Apartment</option>
+                <option>House</option>
+                <option>Student Housing</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>💰 Max Price (P)</label>
+            <input type="number" id="f-price" placeholder="e.g. 3000"/>
+        </div>
+        <button class="filter-btn" onclick="filterListings()">Apply Filters</button>
+    </div>
+
+    <div class="right">
+        <h3 id="count">Loading listings...</h3>
+        <div class="grid" id="grid">
+            <div class="status">⏳ Loading properties...</div>
         </div>
     </div>
+</div>
 
-    <div class="page-header">
-        <h2>Browse All Listings</h2>
-        <p>Find your perfect home in Botswana</p>
-    </div>
+<div class="footer">
+    <h2>Nest<span>Hub</span></h2>
+    <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
+</div>
 
-    <div class="listings-container">
-        <div class="filter-sidebar">
-            <h3>🔍 Filter Listings</h3>
-            <div class="filter-group">
-                <label>📍 Location</label>
-                <select id="filter-location">
-                    <option value="">All Locations</option>
-                    <option>Gaborone</option>
-                    <option>Tlokweng</option>
-                    <option>Kgale</option>
-                    <option>Broadhurst</option>
-                    <option>Mogoditsane</option>
-                    <option>Bontleng</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>🏠 Property Type</label>
-                <select id="filter-type">
-                    <option value="">All Types</option>
-                    <option>Room</option>
-                    <option>Apartment</option>
-                    <option>House</option>
-                    <option>Student Housing</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>💰 Max Price (P)</label>
-                <input type="number" id="filter-price" placeholder="e.g. 3000"/>
-            </div>
-            <button class="filter-btn" onclick="filterListings()">Apply Filters</button>
-        </div>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script>
+    firebase.initializeApp({
+        apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+        authDomain: "nesthub-5e83c.firebaseapp.com",
+        projectId: "nesthub-5e83c",
+        storageBucket: "nesthub-5e83c.firebasestorage.app",
+        messagingSenderId: "596386242109",
+        appId: "1:596386242109:web:5a1e77e0db91f6a6119454"
+    });
 
-        <div class="listings-right">
-            <h3 id="listings-count">Loading listings...</h3>
-            <div class="listings-grid" id="listings-grid">
-                <div class="status-msg">⏳ Loading properties...</div>
-            </div>
-        </div>
-    </div>
+    var db = firebase.firestore();
+    var all = [];
 
-    <div class="footer">
-        <h2>Nest<span>Hub</span></h2>
-        <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
-    </div>
+    function emoji(type) {
+        if(type === "Room") return "🛏️";
+        if(type === "Apartment") return "🏢";
+        if(type === "House") return "🏡";
+        if(type === "Student Housing") return "🎓";
+        return "🏠";
+    }
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
-            authDomain: "nesthub-5e83c.firebaseapp.com",
-            projectId: "nesthub-5e83c",
-            storageBucket: "nesthub-5e83c.firebasestorage.app",
-            messagingSenderId: "596386242109",
-            appId: "1:596386242109:web:5a1e77e0db91f6a6119454",
-            measurementId: "G-CDC0SB1Q4D"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        let allListings = [];
-
-        function getEmoji(type) {
-            if(type === "Room") return "🛏️";
-            if(type === "Apartment") return "🏢";
-            if(type === "House") return "🏡";
-            if(type === "Student Housing") return "🎓";
-            return "🏠";
+    function show(list) {
+        var grid = document.getElementById("grid");
+        var count = document.getElementById("count");
+        if(list.length === 0) {
+            grid.innerHTML = '<div class="status">😔 No listings found.</div>';
+            count.textContent = "No properties found";
+            return;
         }
+        count.textContent = "Showing " + list.length + " Properties";
+        grid.innerHTML = list.map(function(l) {
+            var num = "267" + (l.phone || "").replace(/^0/, "");
+            var msg = encodeURIComponent("Hi, I found your listing on NestHub and I am interested. Please get back to me.");
+            var wa = "https://wa.me/" + num + "?text=" + msg;
+            return '<div class="card">' +
+                '<div class="card-img">' + emoji(l.type) +
+                '<span class="' + (l.verified ? "verified" : "pending") + '">' + (l.verified ? "✔ Verified" : "⏳ Pending") + '</span>' +
+                '</div>' +
+                '<div class="card-body">' +
+                '<h4>' + (l.title || "") + '</h4>' +
+                '<p>📍 ' + (l.location || "") + '</p>' +
+                '<p>🛏️ ' + (l.bedrooms || "") + '</p>' +
+                '<p class="price">P' + (l.price || "") + '/month</p>' +
+                '<a href="' + wa + '" target="_blank" class="wa-btn">💬 WhatsApp Landlord</a>' +
+                '</div></div>';
+        }).join('');
+    }
 
-        function displayListings(listings) {
-            const grid = document.getElementById("listings-grid");
-            const count = document.getElementById("listings-count");
+    function filterListings() {
+        var loc = document.getElementById("f-location").value;
+        var typ = document.getElementById("f-type").value;
+        var pri = document.getElementById("f-price").value;
+        var filtered = all;
+        if(loc) filtered = filtered.filter(function(l) { return l.location === loc; });
+        if(typ) filtered = filtered.filter(function(l) { return l.type === typ; });
+        if(pri) filtered = filtered.filter(function(l) { return parseInt(l.price) <= parseInt(pri); });
+        show(filtered);
+    }
 
-            if(listings.length === 0) {
-                grid.innerHTML = '<div class="status-msg">😔 No listings found.</div>';
-                count.textContent = "No properties found";
-                return;
-            }
+    var params = new URLSearchParams(window.location.search);
+    if(params.get('location')) document.getElementById('f-location').value = params.get('location');
+    if(params.get('type')) document.getElementById('f-type').value = params.get('type');
+    if(params.get('price')) document.getElementById('f-price').value = params.get('price');
 
-            count.textContent = "Showing " + listings.length + " Properties";
-            grid.innerHTML = listings.map(function(listing) {
-                return '<div class="card">' +
-                    '<div class="card-image">' +
-                        getEmoji(listing.type) +
-                        '<span class="' + (listing.verified ? 'verified-badge' : 'pending-badge') + '">' +
-                            (listing.verified ? '✔ Verified' : '⏳ Pending') +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="card-body">' +
-                        '<h4>' + listing.title + '</h4>' +
-                        '<p>📍 ' + listing.location + '</p>' +
-                        '<p>🛏️ ' + listing.bedrooms + '</p>' +
-                        '<p class="card-price">P' + listing.price + '/month</p>' +
-                        '<button class="view-btn" onclick="contactLandlord(\'' + listing.phone + '\', \'' + listing.email + '\')">📞 Contact Landlord</button>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
+    db.collection("listings").get().then(function(snap) {
+        all = [];
+        snap.forEach(function(doc) { all.push(doc.data()); });
+        show(all);
+        if(params.get('location') || params.get('type') || params.get('price')) {
+            filterListings();
         }
-
-        function loadListings() {
-            db.collection("listings").get().then(function(snapshot) {
-                allListings = [];
-                snapshot.forEach(function(doc) {
-                    allListings.push(doc.data());
-                });
-                displayListings(allListings);
-            }).catch(function(error) {
-                document.getElementById("listings-grid").innerHTML = 
-                    '<div class="status-msg">❌ Error: ' + error.message + '</div>';
-                document.getElementById("listings-count").textContent = "Error loading listings";
-            });
-        }
-
-        function filterListings() {
-            var location = document.getElementById("filter-location").value;
-            var type = document.getElementById("filter-type").value;
-            var maxPrice = document.getElementById("filter-price").value;
-
-            var filtered = allListings;
-
-            if(location) filtered = filtered.filter(function(l) { return l.location === location; });
-            if(type) filtered = filtered.filter(function(l) { return l.type === type; });
-            if(maxPrice) filtered = filtered.filter(function(l) { return parseInt(l.price) <= parseInt(maxPrice); });
-
-            displayListings(filtered);
-        }
-
-      function contactLandlord(phone, email) {
-    var whatsappNumber = "267" + phone.replace(/^0/, "");
-    var message = "Hi, I found your listing on NestHub and I am interested in the property. Please get back to me.";
-    var whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
-    window.open(whatsappUrl, "_blank");
-var params = new URLSearchParams(window.location.search);
-var loc = params.get('location');
-var typ = params.get('type');
-var pri = params.get('price');
-
-if(loc) document.getElementById('filter-location').value = loc;
-if(typ) document.getElementById('filter-type').value = typ;
-if(pri) document.getElementById('filter-price').value = pri;
-
-loadListings();
-
-if(loc || typ || pri) {
-    setTimeout(filterListings, 1000);
-};
-    </script>
+    }).catch(function(err) {
+        document.getElementById("grid").innerHTML = '<div class="status">❌ Error: ' + err.message + '</div>';
+        document.getElementById("count").textContent = "Error loading listings";
+    });
+</script>
 
 </body>
 </html>
