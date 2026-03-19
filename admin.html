@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestHub Admin Panel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+
+        /* LOGIN */
+        .login-screen {
+            min-height: 100vh;
+            background-color: #1A3C6E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-size: 28px;
+            color: #1A3C6E;
+            margin-bottom: 6px;
+        }
+
+        .login-box h1 span { color: #F5A623; }
+
+        .login-box p {
+            color: gray;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1A3C6E;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1.5px solid #d0d8e4;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #F5A623;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .login-btn:hover { background: #1A3C6E; }
+
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* ADMIN PANEL */
+        .admin-screen { display: none; }
+
+        .admin-navbar {
+            background: #1A3C6E;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-navbar h1 { color: white; font-size: 22px; }
+        .admin-navbar h1 span { color: #F5A623; }
+
+        .logout-btn {
+            background: #F5A623;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .admin-stats {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-card h2 {
+            font-size: 36px;
+            color: #1A3C6E;
+        }
+
+        .stat-card p {
+            color: gray;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .section-title {
+            padding: 0 24px 16px 24px;
+            color: #1A3C6E;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .listings-table {
+            margin: 0 24px 40px 24px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #1A3C6E;
+            color: white;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: #333;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f9f9f9; }
+
+        .badge-verified {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .verify-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .verify-btn:hover { background: #1e7e34; }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+
+        .delete-btn:hover { background: #bd2130; }
+
+        .loading-msg {
+            text-align: center;
+            padding: 40px;
+            color: gray;
+        }
+
+        .users-table {
+            margin: 0 24px 40px 24px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-box">
+            <h1>Nest<span>Hub</span></h1>
+            <p>Admin Panel — Authorized Access Only</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="admin-email" placeholder="admin@nesthub.co.bw"/>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="admin-password" placeholder="Password"/>
+            </div>
+            <button class="login-btn" onclick="adminLogin()">Access Admin Panel</button>
+            <div class="error-msg" id="error-msg">❌ Invalid credentials</div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-screen" id="admin-screen">
+        <div class="admin-navbar">
+            <h1>Nest<span>Hub</span> — Admin Panel</h1>
+            <button class="logout-btn" onclick="adminLogout()">Log Out</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h2 id="total-listings">0</h2>
+                <p>Total Listings</p>
+            </div>
+            <div class="stat-card">
+                <h2 id="pending-listings">0</h2>
+                <p>Pending Listings</p>
+            </div>
+            <div class="stat-card">
+                <h2 id="verified-listings">0</h2>
+                <p>Verified Listings</p>
+            </div>
+            <div class="stat-card">
+                <h2 id="total-users">0</h2>
+                <p>Total Users</p>
+            </div>
+        </div>
+
+        <!-- Listings -->
+        <div class="section-title">📋 All Listings</div>
+        <div class="listings-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="listings-tbody">
+                    <tr><td colspan="7" class="loading-msg">Loading listings...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Users -->
+        <div class="section-title">👥 Registered Users</div>
+        <div class="users-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody">
+                    <tr><td colspan="5" class="loading-msg">Loading users...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+            authDomain: "nesthub-5e83c.firebaseapp.com",
+            projectId: "nesthub-5e83c",
+            storageBucket: "nesthub-5e83c.firebasestorage.app",
+            messagingSenderId: "596386242109",
+            appId: "1:596386242109:web:5a1e77e0db91f6a6119454"
+        });
+
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        // Admin email - only this email can access
+        var ADMIN_EMAIL = "admin@nesthub.co.bw";
+
+        function adminLogin() {
+            var email = document.getElementById("admin-email").value;
+            var password = document.getElementById("admin-password").value;
+            var errMsg = document.getElementById("error-msg");
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(cred) {
+                    if(cred.user.email !== ADMIN_EMAIL) {
+                        errMsg.style.display = "block";
+                        auth.signOut();
+                        return;
+                    }
+                    document.getElementById("login-screen").style.display = "none";
+                    document.getElementById("admin-screen").style.display = "block";
+                    loadData();
+                })
+                .catch(function() {
+                    errMsg.style.display = "block";
+                });
+        }
+
+        function adminLogout() {
+            auth.signOut().then(function() {
+                document.getElementById("login-screen").style.display = "flex";
+                document.getElementById("admin-screen").style.display = "none";
+            });
+        }
+
+        var listingDocs = [];
+
+        function loadData() {
+            // Load listings
+            db.collection("listings").get().then(function(snap) {
+                listingDocs = [];
+                var pending = 0;
+                var verified = 0;
+
+                snap.forEach(function(doc) {
+                    listingDocs.push({ id: doc.id, ...doc.data() });
+                    if(doc.data().verified) verified++;
+                    else pending++;
+                });
+
+                document.getElementById("total-listings").textContent = listingDocs.length;
+                document.getElementById("pending-listings").textContent = pending;
+                document.getElementById("verified-listings").textContent = verified;
+
+                renderListings();
+            });
+
+            // Load users
+            db.collection("users").get().then(function(snap) {
+                document.getElementById("total-users").textContent = snap.size;
+                var rows = "";
+                snap.forEach(function(doc) {
+                    var u = doc.data();
+                    var date = u.createdAt ? new Date(u.createdAt.toDate()).toLocaleDateString() : "N/A";
+                    rows += "<tr>" +
+                        "<td>" + (u.name || "N/A") + "</td>" +
+                        "<td>" + (u.email || "N/A") + "</td>" +
+                        "<td>" + (u.phone || "N/A") + "</td>" +
+                        "<td>" + (u.role || "N/A") + "</td>" +
+                        "<td>" + date + "</td>" +
+                        "</tr>";
+                });
+                document.getElementById("users-tbody").innerHTML = rows || "<tr><td colspan='5' class='loading-msg'>No users found</td></tr>";
+            });
+        }
+
+        function renderListings() {
+            var tbody = document.getElementById("listings-tbody");
+            if(listingDocs.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='7' class='loading-msg'>No listings found</td></tr>";
+                return;
+            }
+            var rows = "";
+            listingDocs.forEach(function(l) {
+                rows += "<tr>" +
+                    "<td>" + (l.title || "N/A") + "</td>" +
+                    "<td>" + (l.type || "N/A") + "</td>" +
+                    "<td>" + (l.location || "N/A") + "</td>" +
+                    "<td>P" + (l.price || "N/A") + "</td>" +
+                    "<td>" + (l.phone || "N/A") + "</td>" +
+                    "<td><span class='" + (l.verified ? "badge-verified" : "badge-pending") + "'>" + (l.verified ? "✔ Verified" : "⏳ Pending") + "</span></td>" +
+                    "<td>" +
+                    (!l.verified ? "<button class='verify-btn' onclick='verifyListing(\"" + l.id + "\")'>✔ Verify</button>" : "") +
+                    "<button class='delete-btn' onclick='deleteListing(\"" + l.id + "\")'>🗑 Delete</button>" +
+                    "</td>" +
+                    "</tr>";
+            });
+            tbody.innerHTML = rows;
+        }
+
+        function verifyListing(id) {
+            db.collection("listings").doc(id).update({ verified: true })
+                .then(function() {
+                    alert("✅ Listing verified successfully!");
+                    loadData();
+                });
+        }
+
+        function deleteListing(id) {
+            if(confirm("Are you sure you want to delete this listing?")) {
+                db.collection("listings").doc(id).delete()
+                    .then(function() {
+                        alert("🗑 Listing deleted.");
+                        loadData();
+                    });
+            }
+        }
+    </script>
+
+</body>
+</html>
