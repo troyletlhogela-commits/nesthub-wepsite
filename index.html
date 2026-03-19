@@ -115,7 +115,7 @@
             <a href="listings.html">Browse Listings</a>
             <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="login.html">Log In</a>
+           <a href="login.html" id="login-btn">Log In</a>
         </div>
     </div>
 
@@ -238,6 +238,7 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -301,6 +302,22 @@
             if(price) url += 'price=' + price;
             window.location.href = url;
         }
+    // Show username in navbar
+firebase.auth().onAuthStateChanged(function(user) {
+    var btn = document.getElementById("login-btn");
+    if(user) {
+        firebase.firestore().collection("users").doc(user.uid).get().then(function(doc) {
+            if(doc.exists) {
+                var name = doc.data().name.split(" ")[0];
+                btn.textContent = "👤 " + name;
+                btn.href = "#";
+            }
+        });
+    } else {
+        btn.textContent = "Log In";
+        btn.href = "login.html";
+    }
+});
     </script>
 
 </body>
