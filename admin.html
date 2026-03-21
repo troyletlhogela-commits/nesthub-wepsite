@@ -306,6 +306,29 @@
         </div>
 
         <!-- Users -->
+        <!-- Rental Requests -->
+        <div class="section-title">📋 Rental Requests</div>
+        <div class="listings-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tenant Name</th>
+                        <th>Tenant Email</th>
+                        <th>Property</th>
+                        <th>Location</th>
+                        <th>Budget</th>
+                        <th>Move-in Date</th>
+                        <th>Message</th>
+                        <th>Landlord Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requests-tbody">
+                    <tr><td colspan="10" class="loading-msg">Loading requests...</td></tr>
+                </tbody>
+            </table>
+        </div>
         <div class="section-title">👥 Registered Users</div>
         <div class="users-table">
             <table>
@@ -377,6 +400,7 @@
 
         function loadData() {
             // Load listings
+           loadRequests(); 
             db.collection("listings").get().then(function(snap) {
                 listingDocs = [];
                 var pending = 0;
@@ -414,6 +438,78 @@
             });
         }
 
+        [10:54, 21/03/2026] Kgotso Kehakgametse: <!-- Rental Requests -->
+        <div class="section-title">📋 Rental Requests</div>
+        <div class="listings-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tenant Name</th>
+                        <th>Tenant Email</th>
+                        <th>Property</th>
+                        <th>Location</th>
+                        <th>Budget</th>
+                        <th>Move-in Date</th>
+                        <th>Message</th>
+                        <th>Landlord Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requests-tbody">
+                    <tr><td colspan="10" class="loading-msg">Loading requests...</td></tr>
+                </tbody>
+            </table>
+        </div>
+[10:59, 21/03/2026] Kgotso Kehakgametse: function loadRequests() {
+    db.collection("requests").get().then(function(snap) {
+        var tbody = document.getElementById("requests-tbody");
+        if(snap.empty) {
+            tbody.innerHTML = "<tr><td colspan='10' class='loading-msg'>No requests yet</td></tr>";
+            return;
+        }
+        var rows = "";
+        snap.forEach(function(doc) {
+            var r = doc.data();
+            var date = r.createdAt ? new Date(r.createdAt.toDate()).toLocaleDateString() : "N/A";
+            rows += "<tr>" +
+                "<td>" + (r.tenantName || "N/A") + "</td>" +
+                "<td>" + (r.tenantEmail || "N/A") + "</td>" +
+                "<td>" + (r.propertyTitle || "N/A") + "</td>" +
+                "<td>" + (r.propertyLocation || "N/A") + "</td>" +
+                "<td>P" + (r.budget || "N/A") + "</td>" +
+                "<td>" + (r.moveInDate || "N/A") + "</td>" +
+                "<td>" + (r.message || "—") + "</td>" +
+                "<td>" + (r.landlordPhone || "N/A") + "</td>" +
+                "<td><span class='" + (r.status === "rented" ? "badge-verified" : "badge-pending") + "'>" + 
+                (r.status === "rented" ? "✔ Rented" : "⏳ Pending") + "</span></td>" +
+                "<td>" +
+                "<button class='verify-btn' onclick='markRented(\"" + doc.id + "\")'>✔ Mark Rented</button>" +
+                "<button class='delete-btn' onclick='deleteRequest(\"" + doc.id + "\")'>🗑 Delete</button>" +
+                "</td>" +
+                "</tr>";
+        });
+        tbody.innerHTML = rows;
+    });
+}
+
+function markRented(id) {
+    db.collection("requests").doc(id).update({ status: "rented" })
+        .then(function() {
+            alert("✅ Marked as rented!");
+            loadData();
+        });
+}
+
+function deleteRequest(id) {
+    if(confirm("Delete this request?")) {
+        db.collection("requests").doc(id).delete()
+            .then(function() {
+                alert("🗑 Request deleted.");
+                loadData();
+            });
+    }
+}
         function renderListings() {
             var tbody = document.getElementById("listings-tbody");
             if(listingDocs.length === 0) {
