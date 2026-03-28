@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details — NestHub</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+
+        .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .navbar h1 { color: white; font-size: 26px; }
+        .navbar h1 span { color: #F5A623; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 16px; font-size: 14px; }
+        .nav-links a:hover { color: #F5A623; }
+
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #1A3C6E; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .back-btn:hover { color: #F5A623; }
+
+        .property-grid { display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
+
+        /* Left Side */
+        .property-main {}
+
+        .property-img { background: #d0e4f7; border-radius: 16px; height: 300px; display: flex; align-items: center; justify-content: center; font-size: 80px; margin-bottom: 24px; position: relative; }
+
+        .badge { position: absolute; top: 16px; left: 16px; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; color: white; }
+        .badge.verified { background: #28a745; }
+        .badge.pending { background: #F5A623; }
+
+        .property-title { font-size: 26px; color: #1A3C6E; font-weight: bold; margin-bottom: 8px; }
+        .property-location { color: gray; font-size: 15px; margin-bottom: 20px; }
+        .property-price { color: #F5A623; font-size: 28px; font-weight: bold; margin-bottom: 24px; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        .info-card { background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .info-card span { font-size: 28px; }
+        .info-card p { color: #1A3C6E; font-weight: bold; font-size: 13px; margin-top: 6px; }
+        .info-card small { color: gray; font-size: 12px; }
+
+        .section-title { color: #1A3C6E; font-size: 18px; font-weight: bold; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #f0f4ff; }
+
+        .description { background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .description p { color: #555; font-size: 15px; line-height: 1.8; }
+
+        .amenities { background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+        .amenity { background: #f0f4ff; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #1A3C6E; font-weight: bold; text-align: center; }
+
+        /* Right Side */
+        .property-sidebar {}
+
+        .contact-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px; position: sticky; top: 20px; }
+        .contact-card h3 { color: #1A3C6E; font-size: 18px; margin-bottom: 16px; }
+
+        .landlord-info { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0; }
+        .landlord-avatar { width: 50px; height: 50px; background: #1A3C6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; }
+        .landlord-info h4 { color: #1A3C6E; font-size: 15px; margin-bottom: 2px; }
+        .landlord-info p { color: gray; font-size: 13px; }
+
+        .request-btn { width: 100%; background: #1A3C6E; color: white; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .request-btn:hover { background: #F5A623; }
+
+        .wa-btn { width: 100%; background: #25D366; color: white; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; text-decoration: none; display: block; text-align: center; }
+        .wa-btn:hover { background: #128C7E; }
+
+        .price-summary { background: #f0f4ff; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+        .price-summary p { display: flex; justify-content: space-between; font-size: 14px; color: #555; margin-bottom: 6px; }
+        .price-summary p strong { color: #1A3C6E; }
+        .price-summary .total { border-top: 1px solid #d0d8e4; padding-top: 10px; margin-top: 6px; font-weight: bold; font-size: 15px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 20px; padding: 32px; width: 100%; max-width: 440px; margin: 20px; }
+        .modal h3 { color: #1A3C6E; font-size: 20px; margin-bottom: 6px; }
+        .modal p { color: gray; font-size: 13px; margin-bottom: 20px; }
+        .modal-group { margin-bottom: 16px; }
+        .modal-group label { display: block; color: #1A3C6E; font-weight: bold; margin-bottom: 6px; font-size: 13px; }
+        .modal-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1.5px solid #d0d8e4; font-size: 14px; }
+        .modal-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .submit-request { flex: 1; background: #F5A623; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .submit-request:hover { background: #1A3C6E; }
+        .cancel-btn { background: #f0f0f0; color: #333; border: none; padding: 14px 20px; border-radius: 8px; font-size: 15px; cursor: pointer; }
+        .success-msg { background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; margin-top: 12px; display: none; }
+
+        .loading { text-align: center; padding: 60px; color: #1A3C6E; font-size: 18px; }
+
+        .footer { background: #1A3C6E; color: white; padding: 24px; text-align: center; margin-top: 60px; }
+        .footer h2 { margin-bottom: 6px; font-size: 20px; }
+        .footer h2 span { color: #F5A623; }
+        .footer p { color: #a0b4cc; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .property-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-card { position: static; }
+        }
+
+        @media (max-width: 480px) {
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .property-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>Nest<span>Hub</span></h1>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="listings.html">Browse Listings</a>
+            <a href="postproperty.html">Post Property</a>
+            <a href="about.html">About Us</a>
+            <a href="login.html" id="login-btn">Log In</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="listings.html" class="back-btn">← Back to Listings</a>
+        <div id="content">
+            <div class="loading">⏳ Loading property details...</div>
+        </div>
+    </div>
+
+    <!-- Request Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h3>🏠 Request to Rent</h3>
+            <p id="modal-title">Send a rental request to the landlord</p>
+            <div class="modal-group">
+                <label>Your Full Name</label>
+                <input type="text" id="req-name" placeholder="Your full name"/>
+            </div>
+            <div class="modal-group">
+                <label>Your Budget (P/month)</label>
+                <input type="number" id="req-budget" placeholder="e.g. 2000"/>
+            </div>
+            <div class="modal-group">
+                <label>Preferred Move-in Date</label>
+                <input type="date" id="req-date"/>
+            </div>
+            <div class="modal-group">
+                <label>Message to Landlord (Optional)</label>
+                <input type="text" id="req-message" placeholder="e.g. I am a student looking for a quiet place"/>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+                <button class="submit-request" onclick="submitRequest()">Send Request 🚀</button>
+            </div>
+            <div class="success-msg" id="success-msg">✅ Request sent! The landlord will be in touch soon.</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h2>Nest<span>Hub</span></h2>
+        <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+            authDomain: "nesthub-5e83c.firebaseapp.com",
+            projectId: "nesthub-5e83c",
+            storageBucket: "nesthub-5e83c.firebasestorage.app",
+            messagingSenderId: "596386242109",
+            appId: "1:596386242109:web:5a1e77e0db91f6a6119454"
+        });
+
+        var db = firebase.firestore();
+        var auth = firebase.auth();
+        var currentListing = null;
+
+        // Get listing ID from URL
+        var params = new URLSearchParams(window.location.search);
+        var listingId = params.get('id');
+
+        function getEmoji(type) {
+            if(type === "Room") return "🛏️";
+            if(type === "Apartment") return "🏢";
+            if(type === "House") return "🏡";
+            if(type === "Student Housing") return "🎓";
+            return "🏠";
+        }
+
+        function loadProperty() {
+            if(!listingId) {
+                document.getElementById("content").innerHTML = '<div class="loading">❌ Property not found. <a href="listings.html">Go back to listings</a></div>';
+                return;
+            }
+
+            db.collection("listings").doc(listingId).get().then(function(doc) {
+                if(!doc.exists) {
+                    document.getElementById("content").innerHTML = '<div class="loading">❌ Property not found. <a href="listings.html">Go back to listings</a></div>';
+                    return;
+                }
+
+                var l = doc.data();
+                currentListing = l;
+
+                var waNum = "267" + (l.phone || "").replace(/^0/, "");
+                var waMsg = encodeURIComponent("Hi, I found your listing on NestHub and I am interested in " + (l.title || "your property") + ". Please get back to me.");
+                var waUrl = "https://wa.me/" + waNum + "?text=" + waMsg;
+
+                var deposit = l.price ? "P" + (parseInt(l.price)).toLocaleString() : "N/A";
+                var monthly = l.price ? "P" + parseInt(l.price).toLocaleString() : "N/A";
+
+                document.getElementById("content").innerHTML =
+                    '<div class="property-grid">' +
+
+                    // LEFT
+                    '<div class="property-main">' +
+                    '<div class="property-img">' + getEmoji(l.type) +
+                    '<span class="badge ' + (l.verified ? "verified" : "pending") + '">' +
+                    (l.verified ? "✔ Verified" : "⏳ Pending Review") + '</span>' +
+                    '</div>' +
+                    '<h1 class="property-title">' + (l.title || "Property") + '</h1>' +
+                    '<p class="property-location">📍 ' + (l.location || "") + ', Botswana</p>' +
+                    '<p class="property-price">' + monthly + ' <small style="color:gray;font-size:16px;font-weight:normal;">/ month</small></p>' +
+
+                    '<div class="info-grid">' +
+                    '<div class="info-card"><span>🏠</span><p>' + (l.type || "N/A") + '</p><small>Type</small></div>' +
+                    '<div class="info-card"><span>🛏️</span><p>' + (l.bedrooms || "N/A") + '</p><small>Bedrooms</small></div>' +
+                    '<div class="info-card"><span>📍</span><p>' + (l.location || "N/A") + '</p><small>Location</small></div>' +
+                    '</div>' +
+
+                    '<div class="description">' +
+                    '<div class="section-title">📝 Description</div>' +
+                    '<p>' + (l.description || "No description provided.") + '</p>' +
+                    '</div>' +
+
+                    '<div class="amenities">' +
+                    '<div class="section-title">✨ Amenities</div>' +
+                    '<div class="amenities-grid">' +
+                    '<div class="amenity">💧 Water</div>' +
+                    '<div class="amenity">⚡ Electricity</div>' +
+                    '<div class="amenity">📶 WiFi</div>' +
+                    '<div class="amenity">🚗 Parking</div>' +
+                    '<div class="amenity">🔒 Security</div>' +
+                    '<div class="amenity">🛋️ Furnished</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+
+                    // RIGHT
+                    '<div class="property-sidebar">' +
+                    '<div class="contact-card">' +
+                    '<h3>Contact Landlord</h3>' +
+                    '<div class="landlord-info">' +
+                    '<div class="landlord-avatar">👤</div>' +
+                    '<div>' +
+                    '<h4>Property Owner</h4>' +
+                    '<p>' + (l.email || "Available on request") + '</p>' +
+                    '</div>' +
+                    '</div>' +
+
+                    '<div class="price-summary">' +
+                    '<p><span>Monthly Rent</span><strong>' + monthly + '</strong></p>' +
+                    '<p><span>Deposit</span><strong>' + deposit + '</strong></p>' +
+                    '<p class="total"><span>Total to Move In</span><strong>P' + (l.price ? (parseInt(l.price) * 2).toLocaleString() : "N/A") + '</strong></p>' +
+                    '</div>' +
+
+                    '<button class="request-btn" onclick="openModal()">🏠 Request to Rent</button>' +
+                    '<a href="' + waUrl + '" target="_blank" class="wa-btn">💬 WhatsApp Landlord</a>' +
+                    '</div>' +
+                    '</div>' +
+
+                    '</div>';
+
+                document.title = (l.title || "Property") + " — NestHub";
+
+            }).catch(function(err) {
+                document.getElementById("content").innerHTML = '<div class="loading">❌ Error loading property. Please try again.</div>';
+            });
+        }
+
+        function openModal() {
+            var user = auth.currentUser;
+            if(!user) {
+                alert("Please log in to request a rental.");
+                window.location.href = "login.html";
+                return;
+            }
+            document.getElementById("modal-title").textContent = "Requesting: " + (currentListing.title || "") + " in " + (currentListing.location || "");
+            document.getElementById("req-name").value = "";
+            document.getElementById("req-budget").value = "";
+            document.getElementById("req-date").value = "";
+            document.getElementById("req-message").value = "";
+            document.getElementById("success-msg").style.display = "none";
+            document.getElementById("modal").classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("modal").classList.remove("active");
+        }
+
+        function submitRequest() {
+            var user = auth.currentUser;
+            var name = document.getElementById("req-name").value;
+            var budget = document.getElementById("req-budget").value;
+            var date = document.getElementById("req-date").value;
+            var message = document.getElementById("req-message").value;
+
+            if(!name || !budget || !date) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            db.collection("requests").add({
+                tenantName: name,
+                tenantEmail: user.email,
+                tenantUid: user.uid,
+                budget: budget,
+                moveInDate: date,
+                message: message,
+                propertyTitle: currentListing.title,
+                propertyLocation: currentListing.location,
+                propertyPrice: currentListing.price,
+                landlordPhone: currentListing.phone,
+                landlordEmail: currentListing.email,
+                status: "pending",
+                createdAt: new Date()
+            }).then(function() {
+                document.getElementById("success-msg").style.display = "block";
+                var num = "267" + (currentListing.phone || "").replace(/^0/, "");
+                var msg = encodeURIComponent(
+                    "Hi, you have a new rental request on NestHub!\n\n" +
+                    "Property: " + currentListing.title + "\n" +
+                    "Tenant: " + name + "\n" +
+                    "Budget: P" + budget + "/month\n" +
+                    "Move-in Date: " + date + "\n" +
+                    (message ? "Message: " + message : "")
+                );
+                setTimeout(function() {
+                    window.open("https://wa.me/" + num + "?text=" + msg, "_blank");
+                    closeModal();
+                }, 1500);
+            }).catch(function(err) {
+                alert("Error: " + err.message);
+            });
+        }
+
+        // Show username in navbar
+        auth.onAuthStateChanged(function(user) {
+            var btn = document.getElementById("login-btn");
+            if(user) {
+                db.collection("users").doc(user.uid).get().then(function(doc) {
+                    if(doc.exists) {
+                        var name = doc.data().name.split(" ")[0];
+                        btn.textContent = "👤 " + name;
+                        btn.href = "#";
+                    }
+                });
+            }
+        });
+
+        loadProperty();
+    </script>
+
+</body>
+</html>
