@@ -11,9 +11,11 @@
         .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .navbar h1 { color: white; font-size: 26px; }
         .navbar h1 span { color: #F5A623; }
-        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
         .nav-links a { color: white; text-decoration: none; font-size: 14px; }
         .nav-links a:hover { color: #F5A623; }
+        .logout-btn { background: #F5A623; color: white !important; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; }
+        .logout-btn:hover { background: white; color: #1A3C6E !important; }
 
         .hero { background-color: #1A3C6E; color: white; text-align: center; padding: 60px 20px; }
         .hero h2 { font-size: 36px; margin-bottom: 10px; }
@@ -27,7 +29,7 @@
         .listings-section h3 { font-size: 24px; color: #1A3C6E; margin-bottom: 24px; }
         .listings-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
-        .card { background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card { background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: transform 0.2s; cursor: pointer; }
         .card:hover { transform: translateY(-4px); }
         .card-image { background-color: #d0e4f7; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; position: relative; }
         .verified-badge { position: absolute; top: 10px; left: 10px; background-color: #28a745; color: white; font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: bold; }
@@ -36,8 +38,8 @@
         .card-body h4 { margin: 0 0 4px 0; color: #1A3C6E; font-size: 16px; }
         .card-body p { margin: 0 0 8px 0; color: gray; font-size: 13px; }
         .card-price { color: #F5A623; font-weight: bold; font-size: 15px; }
-        .view-btn { display: block; margin-top: 10px; background-color: #25D366; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
-        .view-btn:hover { background-color: #128C7E; }
+        .view-btn { display: block; margin-top: 10px; background-color: #1A3C6E; color: white; text-align: center; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .view-btn:hover { background-color: #F5A623; }
 
         .categories-section { padding: 20px 24px 40px 24px; background-color: white; }
         .categories-section h3 { font-size: 24px; color: #1A3C6E; margin-bottom: 24px; }
@@ -89,7 +91,6 @@
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .why-card { width: 160px; }
         }
-
         @media (max-width: 480px) {
             .navbar { flex-direction: column; align-items: flex-start; }
             .nav-links { width: 100%; }
@@ -115,7 +116,8 @@
             <a href="listings.html">Browse Listings</a>
             <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-           <a href="login.html" id="login-btn">Log In</a>
+            <a href="login.html" id="login-btn">Log In</a>
+            <a href="#" id="logout-btn" class="logout-btn" style="display:none;" onclick="logoutUser()">Log Out</a>
         </div>
     </div>
 
@@ -144,7 +146,6 @@
         </div>
     </div>
 
-    <!-- Featured Listings -->
     <div class="listings-section">
         <h3>Featured Listings</h3>
         <div class="listings-grid" id="featured-grid">
@@ -152,7 +153,6 @@
         </div>
     </div>
 
-    <!-- Browse by Category -->
     <div class="categories-section">
         <h3>Browse by Category</h3>
         <div class="categories-grid">
@@ -164,7 +164,6 @@
         </div>
     </div>
 
-    <!-- Popular Locations -->
     <div class="locations-section">
         <h3>Popular Locations</h3>
         <div class="locations-grid">
@@ -177,7 +176,6 @@
         </div>
     </div>
 
-    <!-- Why Choose NestHub -->
     <div class="why-section">
         <h3>Why Choose NestHub?</h3>
         <div class="why-grid">
@@ -188,7 +186,6 @@
         </div>
     </div>
 
-    <!-- CTA -->
     <div class="cta-section">
         <h3>Rent or List Your Property</h3>
         <p>Join NestHub Today and find your perfect home</p>
@@ -198,7 +195,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div class="footer-grid">
             <div>
@@ -238,9 +234,9 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
     <script>
         firebase.initializeApp({
@@ -262,6 +258,7 @@
             return "🏠";
         }
 
+        // Load featured listings
         db.collection("listings").limit(4).get().then(function(snap) {
             var grid = document.getElementById("featured-grid");
             if(snap.empty) {
@@ -271,10 +268,7 @@
             var html = "";
             snap.forEach(function(doc) {
                 var l = doc.data();
-                var num = "267" + (l.phone || "").replace(/^0/, "");
-                var msg = encodeURIComponent("Hi, I found your listing on NestHub and I am interested. Please get back to me.");
-                var wa = "https://wa.me/" + num + "?text=" + msg;
-                html += '<div class="card">' +
+                html += '<div class="card" onclick="window.location.href=\'property.html?id=' + doc.id + '\'">' +
                     '<div class="card-image">' + getEmoji(l.type) +
                     '<span class="' + (l.verified ? "verified-badge" : "pending-badge") + '">' +
                     (l.verified ? "✔ Verified" : "⏳ Pending") + '</span>' +
@@ -283,14 +277,40 @@
                     '<h4>' + (l.title || "") + '</h4>' +
                     '<p>📍 ' + (l.location || "") + '</p>' +
                     '<p class="card-price">P' + (l.price || "") + '/month</p>' +
-                    '<a href="' + wa + '" target="_blank" class="view-btn">💬 WhatsApp Landlord</a>' +
+                    '<a class="view-btn">🔍 View Details</a>' +
                     '</div></div>';
             });
             grid.innerHTML = html;
-        }).catch(function(err) {
+        }).catch(function() {
             document.getElementById("featured-grid").innerHTML =
                 '<div style="text-align:center;padding:40px;color:gray;grid-column:1/-1;">Unable to load listings.</div>';
         });
+
+        // Auth state
+        firebase.auth().onAuthStateChanged(function(user) {
+            var btn = document.getElementById("login-btn");
+            var logout = document.getElementById("logout-btn");
+            if(user) {
+                db.collection("users").doc(user.uid).get().then(function(doc) {
+                    if(doc.exists) {
+                        var name = doc.data().name.split(" ")[0];
+                        btn.textContent = "👤 " + name;
+                        btn.href = "#";
+                        logout.style.display = "inline";
+                    }
+                });
+            } else {
+                btn.textContent = "Log In";
+                btn.href = "login.html";
+                logout.style.display = "none";
+            }
+        });
+
+        function logoutUser() {
+            firebase.auth().signOut().then(function() {
+                window.location.href = "index.html";
+            });
+        }
 
         function searchHomes() {
             var location = document.getElementById("search-location").value;
@@ -302,22 +322,6 @@
             if(price) url += 'price=' + price;
             window.location.href = url;
         }
-    // Show username in navbar
-firebase.auth().onAuthStateChanged(function(user) {
-    var btn = document.getElementById("login-btn");
-    if(user) {
-        firebase.firestore().collection("users").doc(user.uid).get().then(function(doc) {
-            if(doc.exists) {
-                var name = doc.data().name.split(" ")[0];
-                btn.textContent = "👤 " + name;
-                btn.href = "#";
-            }
-        });
-    } else {
-        btn.textContent = "Log In";
-        btn.href = "login.html";
-    }
-});
     </script>
 
 </body>
