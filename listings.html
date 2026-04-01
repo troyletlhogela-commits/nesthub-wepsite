@@ -10,8 +10,11 @@
         .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .navbar h1 { color: white; font-size: 26px; }
         .navbar h1 span { color: #F5A623; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 16px; font-size: 14px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; }
         .nav-links a:hover { color: #F5A623; }
+        .logout-btn { background: #F5A623; color: white !important; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; }
+        .logout-btn:hover { background: white; color: #1A3C6E !important; }
         .page-header { background-color: #1A3C6E; padding: 40px; text-align: center; color: white; }
         .page-header h2 { font-size: 32px; margin-bottom: 8px; }
         .page-header p { color: #F5A623; font-size: 15px; }
@@ -42,7 +45,7 @@
         .footer h2 span { color: #F5A623; }
         .footer p { color: #a0b4cc; font-size: 12px; }
         @media (max-width: 768px) { .main { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .navbar { flex-direction: column; align-items: flex-start; } .nav-links { width: 100%; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -55,6 +58,7 @@
         <a href="postproperty.html">Post Property</a>
         <a href="about.html">About Us</a>
         <a href="login.html" id="login-btn">Log In</a>
+        <a href="#" id="logout-btn" class="logout-btn" style="display:none;" onclick="logoutUser()">Log Out</a>
     </div>
 </div>
 
@@ -169,17 +173,26 @@
         show(filtered);
     }
 
-    // Show username in navbar
+    function logoutUser() {
+        auth.signOut().then(function() { window.location.href = "index.html"; });
+    }
+
     auth.onAuthStateChanged(function(user) {
         var btn = document.getElementById("login-btn");
+        var logout = document.getElementById("logout-btn");
         if(user) {
             db.collection("users").doc(user.uid).get().then(function(doc) {
                 if(doc.exists) {
                     var name = doc.data().name.split(" ")[0];
                     btn.textContent = "👤 " + name;
                     btn.href = "#";
+                    logout.style.display = "inline";
                 }
             });
+        } else {
+            btn.textContent = "Log In";
+            btn.href = "login.html";
+            logout.style.display = "none";
         }
     });
 
@@ -190,13 +203,9 @@
 
     db.collection("listings").get().then(function(snap) {
         all = [];
-        snap.forEach(function(doc) {
-            all.push({id: doc.id, ...doc.data()});
-        });
+        snap.forEach(function(doc) { all.push({id: doc.id, ...doc.data()}); });
         show(all);
-        if(params.get('location') || params.get('type') || params.get('price')) {
-            filterListings();
-        }
+        if(params.get('location') || params.get('type') || params.get('price')) filterListings();
     }).catch(function(err) {
         document.getElementById("grid").innerHTML = '<div class="status">❌ Error: ' + err.message + '</div>';
         document.getElementById("count").textContent = "Error loading listings";

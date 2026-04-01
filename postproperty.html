@@ -5,238 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post a Property — NestHub</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
 
-        .navbar {
-            background-color: #1A3C6E;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .navbar h1 { color: white; font-size: 26px; }
+        .navbar h1 span { color: #F5A623; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; }
+        .nav-links a:hover { color: #F5A623; }
+        .logout-btn { background: #F5A623; color: white !important; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; }
+        .logout-btn:hover { background: white; color: #1A3C6E !important; }
 
-        .navbar h1 {
-            color: white;
-            margin: 0;
-            font-size: 28px;
-        }
+        .page-header { background-color: #1A3C6E; padding: 40px; text-align: center; color: white; }
+        .page-header h2 { font-size: 36px; margin: 0 0 10px 0; }
+        .page-header p { color: #F5A623; font-size: 16px; margin: 0; }
 
-        .navbar h1 span {
-            color: #F5A623;
-        }
+        .form-container { max-width: 750px; margin: 50px auto; background-color: white; border-radius: 16px; padding: 40px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); }
+        .form-container h3 { color: #1A3C6E; font-size: 22px; margin: 0 0 30px 0; padding-bottom: 15px; border-bottom: 2px solid #f0f4ff; }
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 15px;
-        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; color: #1A3C6E; font-weight: bold; margin-bottom: 8px; font-size: 15px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1.5px solid #d0d8e4; font-size: 15px; color: #333; box-sizing: border-box; font-family: Arial, sans-serif; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1A3C6E; }
+        .form-group textarea { height: 120px; resize: vertical; }
 
-        .nav-links a:hover {
-            color: #F5A623;
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-        .page-header {
-            background-color: #1A3C6E;
-            padding: 40px;
-            text-align: center;
-            color: white;
-        }
+        .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+        .amenity-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #444; cursor: pointer; }
 
-        .page-header h2 {
-            font-size: 36px;
-            margin: 0 0 10px 0;
-        }
+        .upload-box { border: 2px dashed #1A3C6E; border-radius: 12px; padding: 40px; text-align: center; background-color: #f0f4ff; }
+        .upload-box span { font-size: 40px; }
+        .upload-box p { color: #1A3C6E; font-weight: bold; margin: 10px 0 4px 0; }
+        .upload-box small { color: gray; font-size: 13px; }
 
-        .page-header p {
-            color: #F5A623;
-            font-size: 16px;
-            margin: 0;
-        }
+        .submit-btn { width: 100%; background-color: #F5A623; color: white; border: none; padding: 16px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .submit-btn:hover { background-color: #1A3C6E; }
 
-        .form-container {
-            max-width: 750px;
-            margin: 50px auto;
-            background-color: white;
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-        }
+        .note-box { background-color: #fff8ec; border: 1.5px solid #F5A623; border-radius: 10px; padding: 16px; margin-bottom: 30px; font-size: 14px; color: #555; }
+        .note-box strong { color: #F5A623; }
 
-        .form-container h3 {
-            color: #1A3C6E;
-            font-size: 22px;
-            margin: 0 0 30px 0;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f4ff;
-        }
+        .message { text-align: center; margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 14px; display: none; }
+        .message.success { background-color: #d4edda; color: #155724; display: block; }
+        .message.error { background-color: #f8d7da; color: #721c24; display: block; }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .footer { background-color: #1A3C6E; color: white; padding: 30px 40px; text-align: center; margin-top: 60px; }
+        .footer h2 { margin: 0 0 10px 0; font-size: 22px; }
+        .footer h2 span { color: #F5A623; }
+        .footer p { color: #a0b4cc; font-size: 13px; margin: 0; }
 
-        .form-group label {
-            display: block;
-            color: #1A3C6E;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 15px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1.5px solid #d0d8e4;
-            font-size: 15px;
-            color: #333;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #1A3C6E;
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .amenities-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .amenity-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #444;
-            cursor: pointer;
-        }
-
-        .upload-box {
-            border: 2px dashed #1A3C6E;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f0f4ff;
-        }
-
-        .upload-box span {
-            font-size: 40px;
-        }
-
-        .upload-box p {
-            color: #1A3C6E;
-            font-weight: bold;
-            margin: 10px 0 4px 0;
-        }
-
-        .upload-box small {
-            color: gray;
-            font-size: 13px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background-color: #F5A623;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            background-color: #1A3C6E;
-        }
-
-        .note-box {
-            background-color: #fff8ec;
-            border: 1.5px solid #F5A623;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 30px;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .note-box strong {
-            color: #F5A623;
-        }
-
-        .message {
-            text-align: center;
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            display: block;
-        }
-
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-
-        .footer {
-            background-color: #1A3C6E;
-            color: white;
-            padding: 30px 40px;
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .footer p {
-            color: #a0b4cc;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .footer h2 {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-        }
-
-        .footer h2 span {
-            color: #F5A623;
-        }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .amenities-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .navbar { flex-direction: column; align-items: flex-start; } .nav-links { width: 100%; } .form-container { padding: 24px 16px; } }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar">
         <h1>Nest<span>Hub</span></h1>
         <div class="nav-links">
@@ -244,21 +68,19 @@
             <a href="listings.html">Browse Listings</a>
             <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="login.html">Log In</a>
+            <a href="login.html" id="login-btn">Log In</a>
+            <a href="#" id="logout-btn" class="logout-btn" style="display:none;" onclick="logoutUser()">Log Out</a>
         </div>
     </div>
 
-    <!-- Page Header -->
     <div class="page-header">
         <h2>Post Your Property</h2>
         <p>List your property and connect with thousands of tenants</p>
     </div>
 
-    <!-- Form -->
     <div class="form-container">
-
         <div class="note-box">
-            <strong>📋 Please Note:</strong> All listings are reviewed by the NestHub team before going live. This usually takes less than 24 hours. Make sure all information is accurate and photos are clear.
+            <strong>📋 Please Note:</strong> All listings are reviewed by the NestHub team before going live. This usually takes less than 24 hours. By submitting you agree to pay NestHub a finder's fee of one week's rent when a tenant found through this platform moves in.
         </div>
 
         <h3>🏠 Property Details</h3>
@@ -332,7 +154,6 @@
         </div>
 
         <h3>📸 Property Photos</h3>
-
         <div class="form-group">
             <div class="upload-box">
                 <span>📷</span>
@@ -344,7 +165,6 @@
         </div>
 
         <h3>👤 Landlord Details</h3>
-
         <div class="form-row">
             <div class="form-group">
                 <label>Full Name</label>
@@ -355,7 +175,6 @@
                 <input type="tel" id="phone" placeholder="e.g. 71234567"/>
             </div>
         </div>
-
         <div class="form-group">
             <label>Email Address</label>
             <input type="email" id="email" placeholder="your@email.com"/>
@@ -363,69 +182,86 @@
 
         <div id="submit-message" class="message"></div>
         <button class="submit-btn" onclick="submitListing()">🚀 Submit Listing for Review</button>
-
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <h2>Nest<span>Hub</span></h2>
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
     </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
-        authDomain: "nesthub-5e83c.firebaseapp.com",
-        projectId: "nesthub-5e83c",
-        storageBucket: "nesthub-5e83c.firebasestorage.app",
-        messagingSenderId: "596386242109",
-        appId: "1:596386242109:web:5a1e77e0db91f6a6119454",
-        measurementId: "G-CDC0SB1Q4D"
-    };
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+            authDomain: "nesthub-5e83c.firebaseapp.com",
+            projectId: "nesthub-5e83c",
+            storageBucket: "nesthub-5e83c.firebasestorage.app",
+            messagingSenderId: "596386242109",
+            appId: "1:596386242109:web:5a1e77e0db91f6a6119454"
+        });
 
-    firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
+        var db = firebase.firestore();
+        var auth = firebase.auth();
 
-    function submitListing() {
-        var title = document.getElementById("title").value;
-        var type = document.getElementById("type").value;
-        var location = document.getElementById("location").value;
-        var price = document.getElementById("price").value;
-        var bedrooms = document.getElementById("bedrooms").value;
-        var description = document.getElementById("description").value;
-        var phone = document.getElementById("phone").value;
-        var email = document.getElementById("email").value;
-        var msg = document.getElementById("submit-message");
+        function submitListing() {
+            var title = document.getElementById("title").value;
+            var type = document.getElementById("type").value;
+            var location = document.getElementById("location").value;
+            var price = document.getElementById("price").value;
+            var bedrooms = document.getElementById("bedrooms").value;
+            var description = document.getElementById("description").value;
+            var phone = document.getElementById("phone").value;
+            var email = document.getElementById("email").value;
+            var msg = document.getElementById("submit-message");
 
-        if(!title || !type || !location || !price || !description || !phone || !email) {
-            msg.className = "message error";
-            msg.textContent = "❌ Please fill in all required fields";
-            msg.style.display = "block";
-            return;
+            if(!title || !type || !location || !price || !description || !phone || !email) {
+                msg.className = "message error";
+                msg.textContent = "❌ Please fill in all required fields";
+                msg.style.display = "block";
+                return;
+            }
+
+            db.collection("listings").add({
+                title: title, type: type, location: location,
+                price: price, bedrooms: bedrooms, description: description,
+                phone: phone, email: email, verified: false, createdAt: new Date()
+            }).then(function() {
+                msg.className = "message success";
+                msg.textContent = "✅ Listing submitted! We will review it within 24 hours.";
+                msg.style.display = "block";
+            }).catch(function(error) {
+                msg.className = "message error";
+                msg.textContent = "❌ Error: " + error.message;
+                msg.style.display = "block";
+            });
         }
 
-        db.collection("listings").add({
-            title: title,
-            type: type,
-            location: location,
-            price: price,
-            bedrooms: bedrooms,
-            description: description,
-            phone: phone,
-            email: email,
-            verified: false,
-            createdAt: new Date()
-        }).then(function() {
-            msg.className = "message success";
-            msg.textContent = "✅ Listing submitted! We will review it within 24 hours.";
-            msg.style.display = "block";
-        }).catch(function(error) {
-            msg.className = "message error";
-            msg.textContent = "❌ Error: " + error.message;
-            msg.style.display = "block";
+        function logoutUser() {
+            auth.signOut().then(function() { window.location.href = "index.html"; });
+        }
+
+        auth.onAuthStateChanged(function(user) {
+            var btn = document.getElementById("login-btn");
+            var logout = document.getElementById("logout-btn");
+            if(user) {
+                db.collection("users").doc(user.uid).get().then(function(doc) {
+                    if(doc.exists) {
+                        var name = doc.data().name.split(" ")[0];
+                        btn.textContent = "👤 " + name;
+                        btn.href = "#";
+                        logout.style.display = "inline";
+                    }
+                });
+            } else {
+                btn.textContent = "Log In";
+                btn.href = "login.html";
+                logout.style.display = "none";
+            }
         });
-    }
-</script>
+    </script>
+
+</body>
+</html>

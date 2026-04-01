@@ -11,9 +11,11 @@
         .navbar { background-color: #1A3C6E; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .navbar h1 { color: white; font-size: 26px; }
         .navbar h1 span { color: #F5A623; }
-        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
         .nav-links a { color: white; text-decoration: none; font-size: 14px; }
         .nav-links a:hover { color: #F5A623; }
+        .logout-btn { background: #F5A623; color: white !important; padding: 6px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; }
+        .logout-btn:hover { background: white; color: #1A3C6E !important; }
 
         .page-header { background-color: #1A3C6E; padding: 60px 24px; text-align: center; color: white; }
         .page-header h2 { font-size: 36px; margin-bottom: 12px; }
@@ -63,28 +65,22 @@
         .footer h2 span { color: #F5A623; }
         .footer p { color: #a0b4cc; font-size: 13px; margin: 0; }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .page-header h2 { font-size: 28px; }
             .mv-section { grid-template-columns: 1fr; }
             .values-grid { grid-template-columns: repeat(2, 1fr); }
             .team-card { width: 160px; }
         }
-
         @media (max-width: 480px) {
             .navbar { flex-direction: column; align-items: flex-start; }
             .nav-links { width: 100%; }
             .page-header h2 { font-size: 24px; }
-            .page-header p { font-size: 14px; }
-            .story-section h3 { font-size: 22px; }
-            .story-section p { font-size: 15px; }
-            .mv-section { grid-template-columns: 1fr; padding: 40px 16px; gap: 20px; }
+            .mv-section { padding: 40px 16px; gap: 20px; }
             .values-grid { grid-template-columns: 1fr; }
             .team-grid { flex-direction: column; align-items: center; }
             .team-card { width: 100%; max-width: 300px; }
             .traction-grid { flex-direction: column; align-items: center; }
             .traction-card { width: 100%; max-width: 300px; }
-            .cta-section h3 { font-size: 22px; }
         }
     </style>
 </head>
@@ -97,7 +93,8 @@
             <a href="listings.html">Browse Listings</a>
             <a href="postproperty.html">Post Property</a>
             <a href="about.html">About Us</a>
-            <a href="login.html">Log In</a>
+            <a href="login.html" id="login-btn">Log In</a>
+            <a href="#" id="logout-btn" class="logout-btn" style="display:none;" onclick="logoutUser()">Log Out</a>
         </div>
     </div>
 
@@ -108,9 +105,9 @@
 
     <div class="story-section">
         <h3>Our Story</h3>
-        <p>We are students from two institutions the University of Botswana and Botswana Accountancy College who experienced firsthand how difficult it is to find safe, affordable accommodation. Every year thousands of students arrive in Gaborone and face the same painful struggle searching through Facebook groups, dealing with unreliable landlords, and wasting weeks trying to find a place to call home.</p>
+        <p>We are students from two institutions — the University of Botswana and Botswana Accountancy College — who experienced firsthand how difficult it is to find safe, affordable accommodation. Every year thousands of students arrive in Gaborone and face the same painful struggle — searching through Facebook groups, dealing with unreliable landlords, and wasting weeks trying to find a place to call home.</p>
         <p>We asked ourselves one question — <strong style="color:#1A3C6E;">why doesn't Botswana have a proper platform for this?</strong> We couldn't find a good answer. So we decided to build one ourselves.</p>
-        <p>NestHub was born out of that frustration and out of a genuine desire to make life easier for every student and young professional in Botswana looking for a place to call home.</p>
+        <p>NestHub was born out of that frustration — and out of a genuine desire to make life easier for every student and young professional in Botswana looking for a place to call home.</p>
     </div>
 
     <div class="mv-section">
@@ -149,12 +146,17 @@
             <div class="team-card">
                 <div class="team-avatar">👤</div>
                 <h4>Thabiso Semadi</h4>
-                <p>Head of Partnerships & Business Development</p>
+                <p>CEO & Head of Partnerships</p>
             </div>
             <div class="team-card">
                 <div class="team-avatar">👤</div>
                 <h4>Troy Letlhogela</h4>
                 <p>Head of Brand & Growth Strategy</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👤</div>
+                <h4>Kobbie</h4>
+                <p>Head of Finance & Banking</p>
             </div>
         </div>
     </div>
@@ -163,7 +165,7 @@
         <h3>Where We Are So Far 🚀</h3>
         <div class="traction-grid">
             <div class="traction-card"><span>🏛️</span><h4>UB Director of Student Welfare Interest</h4></div>
-            <div class="traction-card"><span>🎓</span><h4>BAC Minister of Hostels Connection</h4></div>
+            <div class="traction-card"><span>🎓</span><h4>BAC Department of Student Welfare Meeting</h4></div>
             <div class="traction-card"><span>🏠</span><h4>First Landlord Already On Board</h4></div>
             <div class="traction-card"><span>💻</span><h4>Platform Built & Live</h4></div>
         </div>
@@ -179,6 +181,47 @@
         <h2>Nest<span>Hub</span></h2>
         <p>© 2025 NestHub. All rights reserved. Built in Botswana 🇧🇼</p>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyCfQ5jFcceOGMZBlBaIu1GtR1J1hyGKrO8",
+            authDomain: "nesthub-5e83c.firebaseapp.com",
+            projectId: "nesthub-5e83c",
+            storageBucket: "nesthub-5e83c.firebasestorage.app",
+            messagingSenderId: "596386242109",
+            appId: "1:596386242109:web:5a1e77e0db91f6a6119454"
+        });
+
+        var auth = firebase.auth();
+        var db = firebase.firestore();
+
+        function logoutUser() {
+            auth.signOut().then(function() { window.location.href = "index.html"; });
+        }
+
+        auth.onAuthStateChanged(function(user) {
+            var btn = document.getElementById("login-btn");
+            var logout = document.getElementById("logout-btn");
+            if(user) {
+                db.collection("users").doc(user.uid).get().then(function(doc) {
+                    if(doc.exists) {
+                        var name = doc.data().name.split(" ")[0];
+                        btn.textContent = "👤 " + name;
+                        btn.href = "#";
+                        logout.style.display = "inline";
+                    }
+                });
+            } else {
+                btn.textContent = "Log In";
+                btn.href = "login.html";
+                logout.style.display = "none";
+            }
+        });
+    </script>
 
 </body>
 </html>
